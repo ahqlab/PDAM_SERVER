@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.octacomm.sample.dao.mapper.DesignDepthMapper">
+
+	<sql id="condition">
+        <where>
+        	<if test="param.searchField != null and param.searchField != '' and param.searchWord != null and param.searchWord != ''">
+       			and ${param.searchField} like '%${param.searchWord}%'
+       		</if>
+       		<if test="param.deviceIdx != null and param.deviceIdx != ''">
+       			and deviceIdx = #{param.deviceIdx}
+       		</if>
+       </where>
+	</sql>
+	
+	<select id="getCountByParam" resultType="_int">
+        SELECT COUNT(*) FROM TB_DESIGN_DEPTH
+    	<include refid="condition"/>
+    </select>
+   
+    <select id="getListByParam" resultType="DesignDepth">
+    	SELECT 
+   		  *
+    	FROM TB_DESIGN_DEPTH
+    	<include refid="condition"/>
+    	ORDER BY ddidx DESC
+        LIMIT #{pageSize} OFFSET #{startRow}
+    </select>   
+    
+</mapper>

@@ -1,0 +1,24 @@
+package net.octacomm.sample.dao.mapper;
+
+
+import net.octacomm.sample.domain.User;
+
+import org.apache.ibatis.annotations.CacheNamespace;
+import org.apache.ibatis.annotations.Select;
+
+/**
+ * The MyBatis Mapper of "user" table  
+ * 
+ * @author tykim
+ * 
+ */
+@CacheNamespace
+public interface UserMapper {
+	
+	@Select("SELECT * FROM user WHERE id = #{id}")
+	User getUser(User user);
+
+	@Select("SELECT * FROM user WHERE id = #{id} AND password = #{password} ")
+	User getUserForAuth(User user);
+
+}

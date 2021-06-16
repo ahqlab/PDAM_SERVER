@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.octacomm.sample.dao.mapper.ConstructionMapper">
+
+	<sql id="condition">
+        <where>
+        	isDel = 0
+        	<if test="param.groupIdx != null and param.groupIdx != '' and param.groupIdx != null and param.groupIdx != ''">
+       			and groupIdx = #{param.groupIdx}
+       		</if>
+        	<if test="param.searchField != null and param.searchField != '' and param.searchWord != null and param.searchWord != ''">
+       			and ${param.searchField} like '%${param.searchWord}%'
+       		</if>
+       		<if test="param.startDate != null and param.startDate != '' and param.endDate != null and param.endDate != ''">
+       			and date_format(createDate, '%Y-%m-%d') between  #{param.startDate}  and  #{param.endDate} 
+       		</if>
+     		<if test="param.role == 1"> 
+     			and id = #{param.constructionIdx} 
+     		</if>
+       </where>
+	</sql>
+	
+	<select id="getCountByParam" resultType="_int">
+        SELECT COUNT(*) FROM TB_CONSTRUCTION
+    	<include refid="condition"/>
+    </select>
+   
+    <select id="getListByParam" resultType="Construction">
+    	SELECT 
+    		id , 
+		  	name , 
+		  	manager , 
+		 	password , 
+		  	contact , 
+		  	location , 
+		  	role , 
+		  	userId , 
+		  	address , 
+    		date_format(createDate, '%Y-%m-%d') as createDate , 
+    		isDel , 
+    		conduct
+    	FROM TB_CONSTRUCTION
+    	<include refid="condition"/>
+    	ORDER BY id DESC
+        LIMIT #{pageSize} OFFSET #{startRow}
+    </select>   
+    
+    <update id="update" parameterType="Construction">
+    UPDATE 
+    	TB_CONSTRUCTION 
+    SET 
+    	name = #{name} , 
+    	location = #{location} ,
+    	address = #{address},
+    	manager = #{manager} 
+    	<if test="password != null and password != ''">
+    	, password = #{password} 
+    	</if>
+    	, contact = #{contact} 
+    	, groupIdx = #{groupIdx} 
+    	, secretCode = #{secretCode} 
+    WHERE id = #{id} 
+    
+    </update>
+    
+</mapper>

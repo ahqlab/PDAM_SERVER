@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+  "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+  "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+		
+	<!-- 관리자웹 : 기본페이지  -->
+	<definition name="commomLayout" template="/WEB-INF/views/common/commonLayout.jsp">
+		<put-attribute name="title" value="우리기술" />
+		<put-attribute name="head" value="/WEB-INF/views/common/head.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/common/nav.jsp" />
+	</definition>
+	
+	<!-- 사용자 관리 페이지 -->
+	<definition name="construction/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/construction/{1}.jsp" />
+	</definition>
+	
+	<definition name="group/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/group/{1}.jsp" />
+	</definition>
+	
+	<definition name="device/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/device/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/device/nav.jsp" />
+	</definition>
+	
+	<definition name="report/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/report/{1}.jsp" />
+	</definition>
+	
+	<definition name="fileinventory/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/fileinventory/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/fileinventory/nav.jsp" />
+	</definition>
+	
+</tiles-definitions>

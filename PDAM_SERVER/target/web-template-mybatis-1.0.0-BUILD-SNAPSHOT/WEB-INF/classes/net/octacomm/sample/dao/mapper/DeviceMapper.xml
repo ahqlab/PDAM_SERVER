@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.octacomm.sample.dao.mapper.DeviceMapper">
+
+	<sql id="condition">
+        <where>
+        	A.isDel = 0
+        	and A.constructionIdx  = B.id
+        	<if test="param.searchField != null and param.searchField != '' and param.searchWord != null and param.searchWord != ''">
+       			and ${param.searchField} like '%${param.searchWord}%'
+       		</if>
+       		<if test="param.startDate != null and param.startDate != '' and param.endDate != null and param.endDate != ''">
+       			and ( date_format(startDate, '%Y-%m-%d') <![CDATA[>=]]> #{param.startDate}  and  date_format(endDate, '%Y-%m-%d') <![CDATA[<=]]> #{param.endDate} )
+       		</if>
+     		and A.constructionIdx = ${param.constructionIdx} 
+       </where>
+	</sql>
+	
+	<select id="getCountByParam" resultType="_int">
+        SELECT 
+        	COUNT(*) 
+        FROM TB_DEVICE A, TB_CONSTRUCTION B
+    	<include refid="condition"/>
+    </select>
+   
+    <select id="getListByParam" resultType="Device">
+    	SELECT 
+    		A.machineNumber, 
+    		A.id, 
+    		A.lavelNo, 
+        	B.name,
+    		A.constructionIdx, 
+    		A.bluetoothNo, 
+    		A.tabletNo, 
+    		A.password , 
+    		A.weContact ,
+    		A.tabletManager ,
+    		A.conduct ,
+    		date_format(A.startDate, '%Y-%m-%d') as startDate , 
+    		date_format(A.endDate, '%Y-%m-%d') as endDate 
+    	FROM TB_DEVICE A, TB_CONSTRUCTION B
+    	<include refid="condition"/>
+    	ORDER BY machineNumber asc
+        LIMIT #{pageSize} OFFSET #{startRow}
+    </select>   
+    
+    
+      <update id="update" parameterType="Device">
+	    UPDATE 
+	    	TB_DEVICE 
+	    SET 
+	    	lavelNo = #{lavelNo} 
+	    	, bluetoothNo = #{bluetoothNo} 
+	    	<if test="password != null and password != ''">
+	    	, password = #{password} 
+	    	</if>
+	    	, machineNumber = #{machineNumber} 
+	    	, weContact = #{weContact} 
+	    	, tabletManager = #{tabletManager} 
+	    	, startDate = #{startDate} 
+	    	, endDate = #{endDate} 
+	    WHERE id = #{id} 
+    </update>
+    
+    
+     <insert id="insert" parameterType="Device">
+	    INSERT INTO TB_DEVICE
+	    ( lavelNo, machineNumber, constructionIdx, bluetoothNo, tabletNo,  password , tabletManager , weContact ,  startDate, endDate )
+	     VALUES 
+	    ( #{lavelNo}, #{machineNumber}, #{constructionIdx}, #{bluetoothNo}, #{tabletNo},  #{password} , #{tabletManager} , #{weContact} ,  #{startDate}, #{endDate} )
+    </insert>  
+    
+    
+    
+    
+     <!-- <insert id="insert" parameterType="Device">
+     	<selectKey resultType="java.lang.String" keyProperty="machineNumber" order="BEFORE">
+		  select 
+		  	concat((select COUNT(*) from TB_DEVICE A WHERE A.constructionIdx = 1 AND isDel = 0) + 1,'호기')
+		  FROM 
+		  	TB_DEVICE A, TB_CONSTRUCTION B 
+		  WHERE 
+		  	A.constructionIdx  = B.id 
+		  	and A.constructionIdx = #{constructionIdx} limit 1
+		  	select concat(COUNT(*)+ 1,'호기') from TB_DEVICE A WHERE A.constructionIdx = #{constructionIdx}
+		</selectKey>
+	    INSERT INTO TB_DEVICE
+	    ( lavelNo, machineNumber, constructionIdx, bluetoothNo, tabletNo,  password , tabletManager , weContact ,  startDate, endDate )
+	     VALUES 
+	    ( #{lavelNo}, #{machineNumber}, #{constructionIdx}, #{bluetoothNo}, #{tabletNo},  #{password} , #{tabletManager} , #{weContact} ,  #{startDate}, #{endDate} )
+    </insert>  -->
+    
+</mapper>

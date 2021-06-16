@@ -1,0 +1,29 @@
+package net.octacomm.sample.service;
+
+import net.octacomm.sample.dao.mapper.UserMapper;
+import net.octacomm.sample.domain.User;
+import net.octacomm.sample.exceptions.InvalidPasswordException;
+import net.octacomm.sample.exceptions.NotFoundUserException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class LoginServiceImpl implements LoginService{
+	
+	@Autowired
+	UserMapper userMapper;
+
+	@Override
+	public boolean login(User user) throws NotFoundUserException, InvalidPasswordException {
+		if (userMapper.getUser(user) == null) {
+			throw new NotFoundUserException();
+		}
+		
+		if (userMapper.getUserForAuth(user) == null) {
+			throw new InvalidPasswordException();
+		}
+		return true;
+	}
+
+}

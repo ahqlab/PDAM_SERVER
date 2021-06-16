@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.octacomm.sample.dao.mapper.GroupMapper">
+
+	<sql id="condition">
+        <where>
+        	isDel = 0
+        	<if test="param.searchField != null and param.searchField != '' and param.searchWord != null and param.searchWord != ''">
+       			and ${param.searchField} like '%${param.searchWord}%'
+       		</if>
+       </where>
+	</sql>
+	
+	<select id="getCountByParam" resultType="_int">
+        SELECT COUNT(*) FROM TB_GROUP
+    	<include refid="condition"/>
+    </select>
+   
+    <select id="getListByParam" resultType="Group">
+    	SELECT 
+    		idx , 
+		  	groupName , 
+		  	(SELECT COUNT(*) FROM 
+		  		(SELECT * FROM 
+		  		TB_CONSTRUCTION 
+				WHERE isDel = 0 
+				AND conduct = 0) A , TB_DEVICE B 
+				WHERE A.ID = B.constructionIdx 
+				AND A.groupIdx = idx 
+				AND B.isDel = 0 
+				AND B.conduct = 0 ) as deviceAmount, 
+		  	(SELECT COUNT(*) FROM 
+		  	TB_CONSTRUCTION A  
+		  	WHERE  A.groupIdx = idx 
+		  	AND A.conduct = 0 
+		  	AND A.isDel = 0 ) as cprtCompanyAmount, 
+		  	isDel , 
+		 	createDate , 
+		  	lastModifiedDate
+    	FROM TB_GROUP
+    	<include refid="condition"/>
+    	ORDER BY idx DESC
+        LIMIT #{pageSize} OFFSET #{startRow}
+    </select>   
+    
+</mapper>

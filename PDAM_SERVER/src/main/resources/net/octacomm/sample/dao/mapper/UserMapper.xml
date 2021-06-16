@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.octacomm.sample.dao.mapper.UserMapper">
+
+	<sql id="condition">
+        <where>
+       	<if test="param.id != ''">
+       		id like '%${param.id}%'
+       	</if>
+       	<if test="param.name != ''">
+       		AND name like '%${param.name}%'
+       	</if>
+       </where>
+	</sql>
+
+    <select id="getCountByParam" resultType="_int">
+        SELECT COUNT(*) FROM user
+    	<include refid="condition"/>
+    </select>
+   
+    <select id="getListByParam" resultType="User">
+    	SELECT * FROM user
+    	<include refid="condition"/>
+    	ORDER BY reg_date DESC
+        LIMIT #{pageSize} OFFSET #{startRow}
+    </select>   
+
+	<update id="update" parameterType="User">
+		UPDATE user
+		<set>
+			<if test="password != ''">
+				password = #{password},
+			</if>
+			<if test="name != ''">
+				name = #{name},
+			</if>
+			<if test="email != ''">
+				email = #{email},
+			</if>
+		</set>
+		WHERE id = #{id}		
+	</update>
+
+</mapper>

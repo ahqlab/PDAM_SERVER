@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.octacomm.sample.dao.mapper.ReportMapper">
+
+	<sql id="condition">
+        <where>
+        	A.deviceIdx = B.id AND B.constructionIdx = C.id
+        	<if test="param.id gt 0">
+       			and ${param.id} = A.deviceIdx and A.isdel = 0 
+       		</if>
+        	<if test="param.searchField != null and param.searchField != '' and param.searchWord != null and param.searchWord != ''">
+       			and ${param.searchField} like '%${param.searchWord}%'
+       		</if>
+      		<if test="param.startDate != null and param.startDate != '' and param.endDate != null and param.endDate != ''">
+       			
+       			and date(A.currentDateTime) <![CDATA[>=]]> #{param.startDate} and date(A.currentDateTime) <![CDATA[<=]]> #{param.endDate} 
+       		</if>
+       </where>
+	</sql>
+	
+		
+	<select id="getCountByParam" resultType="_int">
+		SELECT 
+			COUNT(*)
+		FROM (
+	    	SELECT
+		    	C.name as name ,
+				B.lavelNo as lavelNo ,
+				B.machineNumber as machineNumber ,
+				A.id ,
+				A.deviceIdx ,
+				A.currentDateTime ,
+				A.location , A.pileNo ,
+				A.pileStandard ,
+				A.drillingDepth ,
+				A.intrusionDepth ,
+				A.balance ,
+				A.connectLength ,
+				A.managedStandard ,
+				A.avgPenetrationValue ,
+				A.totalPenetrationValue ,
+				A.hammaT ,
+				A.fallMeter ,
+				A.pileType ,
+				A.method ,
+				A.totalConnectWidth ,
+				A.ultimateBearingCapacity ,
+				A.crossSection ,
+				A.hammaEfficiency ,
+				A.modulusElasticity ,
+				A.isDel, 
+				A.bigo, 
+				A.createDate ,
+				case when @grp = date_format(A.currentDateTime, '%Y-%m-%d') then @rownum:=@rownum + 1 else @rownum :=1 end as rownum,
+				(@grp := date_format(A.currentDateTime, '%Y-%m-%d')) as dum 
+			FROM TB_REPORT A , TB_DEVICE B, TB_CONSTRUCTION C , (select @rownum:=0, @grp:='') r 
+	    	<include refid="condition"/>
+	    	ORDER BY A.createDate desc) as TB
+	    	where 1=1 
+	    	<choose>
+	    		<when test="param.type != null and param.type != '' and param.type != null and param.type != ''">
+	    			<choose>
+	    				<when test="param.type == 'date'">
+	    					and  rownum = 1
+	    				</when>
+	    			</choose>
+	    		</when>
+	    	</choose>
+	    	<choose>
+	    		<when test="param.date != null and param.date != '' and param.date != null and param.date != ''">
+	    			<!-- and createDate = curdate() -->
+	    			<choose>
+	    				<when test="param.date eq 'today'">
+	    					and currentDateTime = curdate()
+	    				</when>
+	    				<otherwise>
+	    					and currentDateTime = #{param.date}
+	    				</otherwise>
+	    			</choose>
+	    		</when>
+	    	</choose>
+    </select>
+   
+    <select id="getListByParam" resultType="Report">
+    	SELECT 
+			name ,
+			lavelNo ,
+			machineNumber , 
+			id ,
+			deviceIdx ,
+			currentDateTime ,
+			location ,
+			pileNo ,
+			pileStandard ,
+			drillingDepth ,
+			intrusionDepth ,
+			balance ,
+			connectLength ,
+			managedStandard ,
+			avgPenetrationValue ,
+			totalPenetrationValue ,
+			hammaT ,
+			fallMeter ,
+			pileType ,
+			method ,
+			totalConnectWidth ,
+			ultimateBearingCapacity ,
+			crossSection ,
+			hammaEfficiency ,
+			modulusElasticity ,
+			createDate, 
+			isDel,
+			bigo
+		FROM (
+	    	SELECT
+		    	C.name as name ,
+				B.lavelNo as lavelNo ,
+				B.machineNumber as machineNumber ,
+				A.id ,
+				A.deviceIdx ,
+				A.currentDateTime ,
+				A.location , A.pileNo ,
+				A.pileStandard ,
+				A.drillingDepth ,
+				A.intrusionDepth ,
+				A.balance ,
+				A.connectLength ,
+				A.managedStandard ,
+				A.avgPenetrationValue ,
+				A.totalPenetrationValue ,
+				A.hammaT ,
+				A.fallMeter ,
+				A.pileType ,
+				A.method ,
+				A.totalConnectWidth ,
+				A.ultimateBearingCapacity ,
+				A.crossSection ,
+				A.hammaEfficiency ,
+				A.modulusElasticity ,
+				A.isDel, 
+				A.bigo, 
+     			A.createDate ,
+				case when @grp = date_format(A.currentDateTime, '%Y-%m-%d') then @rownum:=@rownum + 1 else @rownum :=1 end as rownum,
+				(@grp := date_format(A.currentDateTime, '%Y-%m-%d')) as dum 
+			FROM TB_REPORT A , TB_DEVICE B, TB_CONSTRUCTION C , (select @rownum:=0, @grp:='') r 
+	    	<include refid="condition"/>
+	    	<!-- date_format(A.createDate, '%Y-%m-%d') as createDate, -->
+	    	ORDER BY A.createDate desc ) as TB
+	    	where 1=1  
+	    	<choose>
+	    		<when test="param.type != null and param.type != '' and param.type != null and param.type != ''">
+	    			<choose>
+	    				<when test="param.type == 'date'">
+	    					and  rownum = 1
+	    				</when>
+	    			</choose>
+	    		</when>
+	    	</choose>
+	    	<choose>
+	    		<when test="param.date != null and param.date != '' and param.date != null and param.date != ''">
+	    			<choose>
+	    				<when test="param.date eq 'today'">
+	    					and currentDateTime = curdate()
+	    				</when>
+	    				<otherwise>
+	    					and currentDateTime = #{param.date}
+	    				</otherwise>
+	    			</choose>
+	    		</when>
+	    	</choose>
+	    	ORDER BY createDate DESC
+	        LIMIT #{pageSize} OFFSET #{startRow}
+    </select> 
+    
+    
+    <select id="getListByParamExcel" resultType="Report">
+    	SELECT 
+			name ,
+			lavelNo ,
+			machineNumber , 
+			id ,
+			deviceIdx ,
+			currentDateTime ,
+			location ,
+			pileNo ,
+			pileStandard ,
+			drillingDepth ,
+			intrusionDepth ,
+			balance ,
+			connectLength ,
+			managedStandard ,
+			avgPenetrationValue ,
+			totalPenetrationValue ,
+			hammaT ,
+			fallMeter ,
+			pileType ,
+			method ,
+			totalConnectWidth ,
+			ultimateBearingCapacity ,
+			crossSection ,
+			hammaEfficiency ,
+			modulusElasticity ,
+			createDate ,
+			isDel, 
+			bigo
+		FROM (
+	    	SELECT
+		    	C.name as name ,
+				B.lavelNo as lavelNo ,
+				B.machineNumber as machineNumber ,
+				A.id ,
+				A.deviceIdx ,
+				A.currentDateTime ,
+				A.location , A.pileNo ,
+				A.pileStandard ,
+				A.drillingDepth ,
+				A.intrusionDepth ,
+				A.balance ,
+				A.connectLength ,
+				A.managedStandard ,
+				A.avgPenetrationValue ,
+				A.totalPenetrationValue ,
+				A.hammaT ,
+				A.fallMeter ,
+				A.pileType ,
+				A.method ,
+				A.isDel, 
+				A.totalConnectWidth ,
+				A.ultimateBearingCapacity ,
+				A.crossSection ,
+				A.hammaEfficiency ,
+				A.modulusElasticity ,
+				A.createDate ,
+				A.bigo ,
+				case when @grp = date_format(A.createDate, '%Y-%m-%d') then @rownum:=@rownum + 1 else @rownum :=1 end as rownum,
+				(@grp := date_format(A.currentDateTime, '%Y-%m-%d')) as dum 
+			FROM TB_REPORT A , TB_DEVICE B, TB_CONSTRUCTION C , (select @rownum:=0, @grp:='') r 
+	    	<include refid="condition"/>
+	    	<!--  -->
+	    	ORDER BY  A.createDate asc ) as TB
+	    	where 1=1
+	    	
+	    	
+	    	<choose>
+	    		<when test="param.type != null and param.type != '' and param.type != null and param.type != ''">
+	    			<choose>
+	    				<when test="param.type == 'date'">
+	    					and  rownum = 1
+	    				</when>
+	    			</choose>
+	    		</when>
+	    	</choose>
+	    	<choose>
+	    		<when test="param.date != null and param.date != '' and param.date != null and param.date != ''">
+	    			<!-- and createDate = #{param.date} -->
+	    			<choose>
+	    				<when test="param.date eq 'today'">
+	    					and currentDateTime = curdate()
+	    				</when>
+	    				<otherwise>
+	    					and currentDateTime = #{param.date}
+	    				</otherwise>
+	    			</choose>
+	    		</when>
+	    	</choose>
+	    	ORDER BY createDate ASC
+    </select> 
+    
+    <insert id="insert" parameterType="Report">
+	    INSERT INTO TB_REPORT
+	    ( deviceIdx, currentDateTime, location, pileNo , pileStandard, drillingDepth , intrusionDepth, balance, connectLength, managedStandard, avgPenetrationValue, totalPenetrationValue, hammaT, fallMeter, pileType, method, totalConnectWidth, ultimateBearingCapacity, crossSection , hammaEfficiency , modulusElasticity , bigo , createDate  )
+	     VALUES 
+	     ( #{deviceIdx}, #{currentDateTime}, #{location}, #{pileNo} , #{pileStandard},  #{drillingDepth} , #{intrusionDepth}, #{balance}, #{connectLength}, #{managedStandard}, #{avgPenetrationValue}, #{totalPenetrationValue}, #{hammaT}, #{fallMeter},  #{pileType}, #{method}, #{totalConnectWidth},  #{ultimateBearingCapacity} , #{crossSection} , #{hammaEfficiency} , #{modulusElasticity} ,  #{bigo} , now() )
+	    <selectKey resultType="int" keyProperty="id" order="AFTER">
+        SELECT LAST_INSERT_ID()
+    	</selectKey>
+    </insert>
+    
+    <insert id="insert2" parameterType="Report">
+	    INSERT INTO TB_REPORT
+	    ( deviceIdx, currentDateTime, location, pileNo , pileStandard, drillingDepth , intrusionDepth, balance, connectLength, managedStandard, avgPenetrationValue, totalPenetrationValue, hammaT, fallMeter, pileType, method, totalConnectWidth, ultimateBearingCapacity , crossSection , hammaEfficiency , modulusElasticity , bigo , createDate  )
+	     VALUES 
+	     ( #{deviceIdx}, #{currentDateTime}, #{location}, #{pileNo} , #{pileStandard},  #{drillingDepth} , #{intrusionDepth}, #{balance}, #{connectLength}, #{managedStandard}, #{avgPenetrationValue}, #{totalPenetrationValue}, #{hammaT}, #{fallMeter},  #{pileType}, #{method}, #{totalConnectWidth},   #{ultimateBearingCapacity}, #{crossSection} , #{hammaEfficiency} , #{modulusElasticity} ,  #{bigo} , #{createDate} )
+	    <selectKey resultType="int" keyProperty="id" order="AFTER">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>  
+      
+    
+</mapper>

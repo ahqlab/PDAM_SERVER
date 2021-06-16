@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.octacomm.sample.dao.mapper.FileUsingChartMapper">
+
+    <!-- <select id="getChartData" parameterType="net.octacomm.sample.domain.FileUsingChartParam" resultType="net.octacomm.sample.domain.FileUsingChart">
+		SELECT 
+		   IF(value5 != "" , cast(value5  as unsigned) , 0 ) value5,
+		   IF(value6 != "" , cast(value6  as unsigned) , 0 ) value6,
+		   IF(value7 != "" , cast(value7  as unsigned) , 0 ) value7,
+		   IF(value8 != "" , cast(value8  as unsigned) , 0 ) value8,
+		   IF(value9 != "" , cast(value9  as unsigned) , 0 ) value9,
+		   IF(value10 != "" , cast(value10  as unsigned) , 0 ) value10,
+		   IF(value11 != "" , cast(value11  as unsigned) , 0 ) value11,
+		   IF(value12 != "" , cast(value12  as unsigned) , 0 ) value12,
+		   IF(value13 != "" , cast(value13  as unsigned) , 0 ) value13,
+		   IF(value14 != "" , cast(value14  as unsigned) , 0 ) value14,
+		   IF(value15 != "" , cast(value15  as unsigned) , 0 ) value15,
+		   (IF(value5 != "" , cast(value5  as unsigned) , 0 )
+		  + IF(value6 != "" , cast(value6  as unsigned) , 0 ) 
+		  + IF(value7 != "" , cast(value7  as unsigned) , 0 ) 
+		  + IF(value8 != "" , cast(value8  as unsigned) , 0 ) 
+		  + IF(value9 != "" , cast(value9  as unsigned) , 0 ) 
+		  + IF(value10 != "" , cast(value10  as unsigned) , 0 ) 
+		  + IF(value11 != "" , cast(value11  as unsigned) , 0 ) 
+		  + IF(value12 != "" , cast(value12  as unsigned) , 0 ) 
+		  + IF(value13 != "" , cast(value13  as unsigned) , 0 ) 
+		  + IF(value14 != "" , cast(value14  as unsigned) , 0 ) 
+		  + IF(value15 != "" , cast(value15  as unsigned) , 0 )
+		  ) total
+		  from (
+		  SELECT 
+		    sum(case when A.VALUE='5' then A.VALUE end) as 'value5',
+		    sum(case when A.VALUE='6' then A.VALUE end) as 'value6',
+		    sum(case when A.VALUE='7' then A.VALUE end) as 'value7',
+		    sum(case when A.VALUE='8' then A.VALUE end) as 'value8',
+		    sum(case when A.VALUE='9' then A.VALUE end) as 'value9',
+		    sum(case when A.VALUE='10' then A.VALUE end) as 'value10',
+		    sum(case when A.VALUE='11' then A.VALUE end) as 'value11',
+		    sum(case when A.VALUE='12' then A.VALUE end) as 'value12',
+		    sum(case when A.VALUE='13' then A.VALUE end) as 'value13',
+		    sum(case when A.VALUE='14' then A.VALUE end) as 'value14',
+		    sum(case when A.VALUE='15' then A.VALUE end) as 'value15'
+		  FROM (
+		    SELECT 
+		      TB_PIECE.value VALUE , SUM(TB_PIECE.value) TOTAL
+		    FROM TB_CONSTRUCTION , TB_DEVICE , TB_REPORT , TB_PIECE
+		    WHERE 1=1
+		      AND TB_CONSTRUCTION.id = #{constructionIdx}
+		      AND TB_REPORT.pileType = #{pile}
+		      AND TB_PIECE.name = #{name}
+		      AND TB_DEVICE.ID = TB_REPORT.deviceIdx
+		      AND TB_REPORT.id = TB_PIECE.reportIdx
+		      AND TB_PIECE.value IN ('5','6','7','8','9','10','11','12','13','14','15')
+		      GROUP BY TB_PIECE.value
+		      ORDER BY cast(TB_PIECE.value as unsigned) ASC) A ) b
+    </select> -->
+    
+    
+    
+    <select id="getChartData" resultType="net.octacomm.sample.domain.FileUsingChart">
+		SELECT 
+		   IF(value5 != "" , cast(value5 / 5  as unsigned) , 0 ) value5,
+		   IF(value6 != "" , cast(value6 / 6  as unsigned) , 0 ) value6,
+		   IF(value7 != "" , cast(value7 / 7 as unsigned) , 0 ) value7,
+		   IF(value8 != "" , cast(value8 / 8 as unsigned) , 0 ) value8,
+		   IF(value9 != "" , cast(value9 / 9 as unsigned) , 0 ) value9,
+		   IF(value10 != "" , cast(value10 / 10 as unsigned) , 0 ) value10,
+		   IF(value11 != "" , cast(value11 / 11 as unsigned) , 0 ) value11,
+		   IF(value12 != "" , cast(value12 / 12 as unsigned) , 0 ) value12,
+		   IF(value13 != "" , cast(value13 / 13 as unsigned) , 0 ) value13,
+		   IF(value14 != "" , cast(value14 / 14 as unsigned) , 0 ) value14,
+		   IF(value15 != "" , cast(value15 / 15 as unsigned) , 0 ) value15,
+		   IF(value16 != "" , cast(value16 / 16 as unsigned) , 0 ) value16,
+		   IF(value17 != "" , cast(value17 / 17 as unsigned) , 0 ) value17,
+		   IF(value18 != "" , cast(value18 / 18 as unsigned) , 0 ) value18,
+		   (IF(value5 != "" , cast(value5 / 5 as unsigned) , 0 )
+		  + IF(value6 != "" , cast(value6 / 6 as unsigned) , 0 ) 
+		  + IF(value7 != "" , cast(value7 / 7 as unsigned) , 0 ) 
+		  + IF(value8 != "" , cast(value8 / 8 as unsigned) , 0 ) 
+		  + IF(value9 != "" , cast(value9 / 9 as unsigned) , 0 ) 
+		  + IF(value10 != "" , cast(value10 / 10 as unsigned) , 0 ) 
+		  + IF(value11 != "" , cast(value11 / 11 as unsigned) , 0 ) 
+		  + IF(value12 != "" , cast(value12 / 12 as unsigned) , 0 ) 
+		  + IF(value13 != "" , cast(value13 / 13 as unsigned) , 0 ) 
+		  + IF(value14 != "" , cast(value14 / 14 as unsigned) , 0 ) 
+		  + IF(value15 != "" , cast(value15 / 15 as unsigned) , 0 )
+		  + IF(value16 != "" , cast(value16 / 16 as unsigned) , 0 )
+		  + IF(value17 != "" , cast(value17 / 17 as unsigned) , 0 )
+		  + IF(value18 != "" , cast(value18 / 18 as unsigned) , 0 )
+		  ) total
+		  from (
+		  SELECT 
+		    sum(case when A.VALUE='5' then A.TOTAL end) as 'value5',
+		    sum(case when A.VALUE='6' then A.TOTAL end) as 'value6',
+		    sum(case when A.VALUE='7' then A.TOTAL end) as 'value7',
+		    sum(case when A.VALUE='8' then A.TOTAL end) as 'value8',
+		    sum(case when A.VALUE='9' then A.TOTAL end) as 'value9',
+		    sum(case when A.VALUE='10' then A.TOTAL end) as 'value10',
+		    sum(case when A.VALUE='11' then A.TOTAL end) as 'value11',
+		    sum(case when A.VALUE='12' then A.TOTAL end) as 'value12',
+		    sum(case when A.VALUE='13' then A.TOTAL end) as 'value13',
+		    sum(case when A.VALUE='14' then A.TOTAL end) as 'value14',
+		    sum(case when A.VALUE='15' then A.TOTAL end) as 'value15',
+		    sum(case when A.VALUE='16' then A.TOTAL end) as 'value16',
+		    sum(case when A.VALUE='17' then A.TOTAL end) as 'value17',
+		    sum(case when A.VALUE='18' then A.TOTAL end) as 'value18'
+		  FROM (
+		    SELECT 
+		      TB_PIECE.value VALUE , SUM(TB_PIECE.value) TOTAL
+		    FROM TB_CONSTRUCTION , TB_DEVICE , TB_REPORT , TB_PIECE
+		    WHERE 1=1
+		      AND TB_CONSTRUCTION.id = #{constructionIdx}
+		      AND TB_DEVICE.constructionIdx  = TB_CONSTRUCTION.id
+		      AND TB_DEVICE.ID = TB_REPORT.deviceIdx
+		      AND TB_REPORT.id = TB_PIECE.reportIdx
+		      AND TB_REPORT.pileType = #{pileType}
+		      AND TB_REPORT.pileStandard = #{pileStandard}
+		      AND TB_PIECE.name = #{name}
+		      AND TB_REPORT.isDel = 0 
+ 			  AND TB_DEVICE.isDel = 0 
+		      AND TB_PIECE.value IN ('5','6','7','8','9','10','11','12','13','14','15', '16', '17', '18')
+		      GROUP BY TB_PIECE.value
+		      ORDER BY cast(TB_PIECE.value as unsigned) ASC) A ) b
+    </select>
+    
+</mapper>
