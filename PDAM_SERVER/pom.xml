@@ -15,7 +15,7 @@
 		<springframework.version>3.2.3.RELEASE</springframework.version>
 		
 		<!-- Spring Security -->
-		<spring.security-version>3.1.4.RELEASE</spring.security-version>
+		<spring.security-version>5.5.1</spring.security-version>
 		
 		<!-- AspectJ AOP -->
 		<aspectj.version>1.7.2</aspectj.version>
@@ -121,13 +121,6 @@
 		</dependency>
 	 	
 		<!-- Spring Security -->
-<!-- 
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>${spring.security-version}</version>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
@@ -139,7 +132,20 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${spring.security-version}</version>
 		</dependency>
- -->		
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security-version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring.security-version}</version>
+		</dependency>
+		
+		
 		<!-- AspectJ AOP -->
 		<dependency>
 			<groupId>org.aspectj</groupId>

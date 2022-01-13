@@ -20,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.mvc.WebContentInterceptor;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -51,7 +52,19 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public HandlerInterceptor logInterceptor() {
 		return new LogInterceptor();
 	}
-
+	
+   @Bean
+   public WebContentInterceptor webChangeInterceptor() {
+        WebContentInterceptor webContentInterceptor = new WebContentInterceptor();
+        webContentInterceptor.setCacheSeconds(0);
+        webContentInterceptor.setUseExpiresHeader(true);
+        webContentInterceptor.setUseCacheControlHeader(true);
+        webContentInterceptor.setUseCacheControlNoStore(true);
+        webContentInterceptor.setSupportedMethods(new String[]{"GET", "POST", "PUT", "DELETE"});
+        return webContentInterceptor;
+    }
+   
+   
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		String patterns[] = new String[] { 
@@ -62,11 +75,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new LoginInterceptor())
 						.addPathPatterns(patterns)
 						.excludePathPatterns("/login")
+						.excludePathPatterns("/j_spring_security_check")
 						.excludePathPatterns("/mobile/device/login")
 						.excludePathPatterns("/mobile/device/all/list")
 						.excludePathPatterns("/api/get/report/list")
 						.excludePathPatterns("/api/get/auth/check")
-						.excludePathPatterns("/mobile/regist/report");
+						.excludePathPatterns("/mobile/regist/report")
+						.excludePathPatterns("/mobile/regist/report2");
 	}
 
 	@Override

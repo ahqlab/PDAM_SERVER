@@ -125,9 +125,7 @@ $(document).ready(
 	<div class="tab_menu">
 		<ul>
 			<%-- <li><a href="${pageContext.request.contextPath}/construction/list"><img src="${pageContext.request.contextPath}/images/icon03_off.png" class="icon03">협력사리스트</a></li> --%>
-			
 			<li>
-				
 				<c:choose>
 					<c:when test="${sessionInfo.role == 0}">
 						<a href="${pageContext.request.contextPath}/construction/list">
@@ -140,7 +138,6 @@ $(document).ready(
 						</a>
 					</c:when>					
 				</c:choose>
-				
 			</li>
 			
 			<li class="on"><a href="#"><img src="${pageContext.request.contextPath}/images/icon03_on.png" class="icon03">협력사등록</a></li>

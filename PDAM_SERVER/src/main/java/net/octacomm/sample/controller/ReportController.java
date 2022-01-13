@@ -51,7 +51,9 @@ public class ReportController{
 	@RequestMapping(value = "/list")
 	public void list(Model model, @ModelAttribute("domainParam") ReportParam param, BindingResult result, HttpSession session) {
 		
-		System.err.println("Search Param : {}" +  param);
+		int totalConstruction = 0;
+		
+		System.err.println("Search Param : {}" +  param); 
 		
 		param.setRole((int) session.getAttribute("role"));
 		param.setConstructionIdx((int) session.getAttribute("constructionIdx"));
@@ -59,7 +61,7 @@ public class ReportController{
 		int totalCount = mapper.getCountByParam(param);
 		
 		System.err.println("Total Count : {}" +  totalCount);
-	
+	  
 		Pagination page;
 		
 		if (param.getPageSize() > 0 && param.getPageGroupSize() > 0) {
@@ -71,15 +73,27 @@ public class ReportController{
 		
 		//System.err.println("page.getStartRow() : " + page.getStartRow());
 		//System.err.println("page.getPageSize() : " + page.getPageSize());
-		
+		totalConstruction = mapper.getCount(param);
 		List<Report> domainList = mapper.getListByParam(page.getStartRow(), page.getPageSize(), param);
 		int rownum = (totalCount + 1) - page.getStartRow();
-		for (Report d : domainList) {
-			d.setRownum(rownum = rownum - 1);
-			d.setPiece(pieceMapper.getListByReportIdx(d.getId()));
-			d.setPenetrations(penetrationMapper.getListByReportIdx(d.getId()));
+		
+		for (int i = 0; i < domainList.size(); i++) {
+			/*
+			 * if(i == 0) { domainList.get(i).setTotalConstruction(totalConstruction); }else
+			 * { totalConstruction -= domainList.get(i - 1).getTodayConstruction();
+			 * domainList.get(i).setTotalConstruction(totalConstruction); }
+			 */
+			domainList.get(i).setRownum(rownum = rownum - 1);
+			domainList.get(i).setPiece(pieceMapper.getListByReportIdx(domainList.get(i).getId()));
+			domainList.get(i).setPenetrations(penetrationMapper.getListByReportIdx(domainList.get(i).getId()));
 		}
 		
+		//List<Report> domainList = mapper.getListByParam(page.getStartRow(), page.getPageSize(), param);
+		//for (Report d : domainList) {
+		//	
+		//}
+		
+		model.addAttribute("totalConstruction", totalConstruction);
 		model.addAttribute("device", device);
 		model.addAttribute("param", param);
 		model.addAttribute("page", page);		
@@ -141,11 +155,20 @@ public class ReportController{
 		 * Report rp = mapper.get(report.getId()); System.err.println("rp : " +
 		 * rp.getTotalConnectWidth());
 		 */
+		//piese : Piece(id=84438, reportIdx=24280, name=단본, value=9)
+		//piese : Piece(id=84439, reportIdx=24280, name=하단, value=0)
+		//piese : Piece(id=0, reportIdx=24280, name=null, value=0)
+		//piese : Piece(id=0, reportIdx=24280, name=null, value=0)
+		//piese : Piece(id=84440, reportIdx=24280, name=상단, value=0)
+		//ss
+		
 		report.setUltimateBearingCapacity(String.valueOf(calDanish(report)));
 		//report.setUltimateBearingCapacity(report.getUltimateBearingCapacity());
 		int result = mapper.update(report);
 		if(result > 0) {
+			//System.err.println("report.getPiece() : " + report.getPiece());
 			for (Piece piese : report.getPiece()) {
+				//System.err.println("piese : " + piese);
 				//if(piese.getValue().toString().length() > 0) {
 					if(pieceMapper.get(piese.getId()) != null) {
 						if(pieceMapper.update(piese) == 0) {
@@ -193,6 +216,11 @@ public class ReportController{
 		return domainList;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/doRestore", method = RequestMethod.POST)
+	public boolean doRestore(@RequestParam("id") int id) {
+		return mapper.doRestore(id) > 0;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/doDelete", method = RequestMethod.POST)

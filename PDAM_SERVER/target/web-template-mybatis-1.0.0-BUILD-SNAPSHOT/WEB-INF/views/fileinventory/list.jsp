@@ -21,14 +21,16 @@ function deleteConfirm(url){
 			<form:form id="searchForm" commandName="domainParam" method="POST">
 				<form:hidden path="currentPage"/>
 				<!--등록일 검색폼-->
-				<div class="search_form01">
+				<!-- <div class="search_form01">
 					<form:input path="startDate" class="input01"/><span>~</span><form:input path="endDate" class="input01"/> 
-				</div>
+				</div> -->
 				<!--등록일 검색폼 end-->
 	
 				<!--제목 검색폼-->
 				
 				<div class="search_form02">
+					<form:input path="startDate" class="input01"/><span>~</span><form:input path="endDate" class="input01"/> 
+					
 					<form:select id="searchForm" class="select01" path="searchField">
 						<form:option value="">선택</form:option>
 	                	<form:option value="pileType">종류</form:option>

@@ -82,12 +82,10 @@ public interface FileInventoryMapper extends CRUDMapper<FileInventory, FileInven
 		
 	@Select("SELECT " + SELECT_FIELDS + " FROM " + TABLE_NAME + " WHERE registDate =  #{registDate} AND constructionIdx = #{constructionIdx} ")
 	FileInventory getDate(FileInventory inventory);
-	
-	
+		
 	@Select("SELECT pileType, pileStandard, fileWeight  FROM " + TABLE_NAME + " WHERE constructionIdx = #{constructionIdx} GROUP BY pileType, pileStandard, fileWeight ORDER BY pileType ")
 	List<FileInventory> getPileTypeList(FileInventory inventory);
 
-	
 	//List<FileInventoryOfChart> getFileInventoryOfChart(FileUsingChartParam param);
 
 	List<FileInventoryOfChart> getFileInventoryOfChart(@Param("constructionIdx") int constructionIdx, @Param("pileType") String pileType, @Param("pileStandard") String pileStandard);

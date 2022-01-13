@@ -13,6 +13,8 @@ public class Group  implements Domain{
 	
 	private String cprtCompanyAmount;
 	
+	private String franchAmount;
+	
 	private int isDel;
 	
 	private String createDate;

@@ -29,7 +29,7 @@
 				<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${param.constructionIdx}" class="on">
 					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
 				</a>
-				<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
+				<%-- <a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
 					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
 				</a>
 				<a href="#">
@@ -37,7 +37,7 @@
 				</a>
 				<a href="#">
 					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">주유현황
-				</a>
+				</a> --%>
 			</li>
 			</c:when>
 			<c:when test="${sessionInfo.role == 1}">
@@ -48,7 +48,7 @@
 					<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${sessionInfo.constructionIdx}" class="on">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
 					</a>
-					<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${sessionInfo.constructionIdx}">
+					<%-- <a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${sessionInfo.constructionIdx}">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
 					</a>
 					<a href="#">
@@ -56,7 +56,7 @@
 					</a>
 					<a href="#">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">주유현황
-					</a>
+					</a> --%>
 				</li>
 			</c:when>
 			<c:when test="${sessionInfo.role == 2}">
@@ -70,7 +70,7 @@
 				 	<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${param.constructionIdx}" class="on">
 				 		<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
 				 	</a>
-				 	<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
+				 	<%-- <a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
 					</a>
 					<a href="#">
@@ -81,7 +81,7 @@
 					</a>
 					<a href="${pageContext.request.contextPath}/designDepth/list">
 						<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">설계심도
-					</a>
+					</a> --%>
 				</li>	
 			</c:when>
 		</c:choose>

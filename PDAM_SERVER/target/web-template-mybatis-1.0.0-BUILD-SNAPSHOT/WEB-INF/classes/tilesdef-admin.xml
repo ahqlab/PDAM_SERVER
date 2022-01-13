@@ -14,10 +14,12 @@
 	<!-- 사용자 관리 페이지 -->
 	<definition name="construction/**" extends="commomLayout">
 		<put-attribute name="content" value="/WEB-INF/views/construction/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/construction/nav.jsp" />
 	</definition>
 	
 	<definition name="group/**" extends="commomLayout">
 		<put-attribute name="content" value="/WEB-INF/views/group/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/group/nav.jsp" />
 	</definition>
 	
 	<definition name="device/**" extends="commomLayout">
@@ -27,11 +29,47 @@
 	
 	<definition name="report/**" extends="commomLayout">
 		<put-attribute name="content" value="/WEB-INF/views/report/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/report/nav.jsp" />
+	</definition>
+	
+	<definition name="ips/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/ips/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/ips/nav.jsp" />
+	</definition>
+	
+	<definition name="oiluse/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/oiluse/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/oiluse/nav.jsp" />
+	</definition>
+	
+	<definition name="eus/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/eus/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/eus/nav.jsp" />
+	</definition>
+	
+	<definition name="mis/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/mis/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/mis/nav.jsp" />
+	</definition>
+	
+	<definition name="ips/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/ips/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/ips/nav.jsp" />
 	</definition>
 	
 	<definition name="fileinventory/**" extends="commomLayout">
 		<put-attribute name="content" value="/WEB-INF/views/fileinventory/{1}.jsp" />
 		<put-attribute name="nav" value="/WEB-INF/views/fileinventory/nav.jsp" />
+	</definition>
+	
+	<definition name="erpAdmin/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/erpAdmin/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/erpAdmin/nav.jsp" />
+	</definition>
+	
+	<definition name="designDepth/**" extends="commomLayout">
+		<put-attribute name="content" value="/WEB-INF/views/designDepth/{1}.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/views/designDepth/nav.jsp" />
 	</definition>
 	
 </tiles-definitions>

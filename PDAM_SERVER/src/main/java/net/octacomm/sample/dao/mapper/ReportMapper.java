@@ -79,6 +79,10 @@ public interface ReportMapper extends CRUDMapper<Report, ReportParam, Integer> {
 	
 	@Update("UPDATE " + TABLE_NAME + " SET isDel = 1 where id = #{id}")
 	int doDelete(int id);
+	
+	
+	@Update("UPDATE " + TABLE_NAME + " SET isDel = 0 where id = #{id}")
+	int doRestore(int id);
 
 	void insert2(Report report);
 	
@@ -118,5 +122,15 @@ public interface ReportMapper extends CRUDMapper<Report, ReportParam, Integer> {
 			"           WHERE C.id = D.constructionIdx) " +
 			" ORDER BY A.deviceIdx ASC, A.createDate DESC ")
 	List<ApiReport> getApiReport();
+	
+	
+	
+	@Select("SELECT count(*) FROM " + TABLE_NAME + " WHERE deviceIdx =  #{id} and isDel = 0")
+	int getCount(ReportParam param);
+	
+	@Select("SELECT COUNT(*) FROM (SELECT * FROM TB_REPORT WHERE isDel = 0) A , (SELECT * FROM TB_DEVICE WHERE isDel = 0) B " + 
+			"WHERE A.deviceIdx = B.id " + 
+			"AND B.constructionIdx = #{constructionIdx} ")
+	int getCountByConstruction(@Param("constructionIdx") int constructionIdx);
 
 }

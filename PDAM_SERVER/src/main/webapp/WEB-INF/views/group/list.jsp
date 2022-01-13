@@ -49,7 +49,8 @@ $( document ).ready( function() {
 				<tr>
 					<th style="width: 10%;">시공사</th>
 					<th style="width: 5%;">협력사 ${constructionCount}</th>
-					<th style="width: 5%;">운영장비 ${deviceCount}</th>
+					<th style="width: 5%;">본사 운영장비 ${deviceCount}</th>
+					<th style="width: 5%;">가맹 운영장비 ${devicePrenchCount}</th>
 					<th></th>
 				</tr>
 				<c:forEach var="domain" items="${domainList}"  varStatus="status">
@@ -59,6 +60,7 @@ $( document ).ready( function() {
 						</td>
 						<td>${domain.cprtCompanyAmount}&nbsp;개</td>
 						<td>${domain.deviceAmount}&nbsp;대</td>
+						<td>${domain.franchAmount}&nbsp;대</td>
 						<td></td>
 					</tr>
 				</c:forEach>

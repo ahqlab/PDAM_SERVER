@@ -68,7 +68,6 @@ public class ConstructionController extends AbstractConstructionCRUDController<C
 		return mapper.doDelete(id) > 0;
 	}
 	
-	
 	@ResponseBody
 	@RequestMapping(value = "/update/conduct", method = RequestMethod.POST)
 	public boolean updateConduct(@RequestParam("id") int id, @RequestParam("conduct") int conduct) {

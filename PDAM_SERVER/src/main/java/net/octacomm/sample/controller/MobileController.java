@@ -81,6 +81,47 @@ public class MobileController {
 		return response;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/regist/report2", method = RequestMethod.POST)
+	public CommonResponse<Boolean> registReport2(@RequestBody List<Report> report, BindingResult result){
+		System.err.println("report : " + report.size());
+		CommonResponse<Boolean> response = new CommonResponse<Boolean>();
+		for (Report report2 : report) {
+			System.err.println("report value : " + report2);
+			try{
+				if(report2.getCreateDate() != null) {
+					reportMapper.insert2(report2);
+				}else {
+					reportMapper.insert(report2);
+				}
+			}catch (Exception e) {
+				System.err.println("insert  오류");
+				response.setDomain(false);
+				return response;
+			}
+			
+			for (Piece piece : report2.getPiece()) {
+				piece.setReportIdx(report2.getId());
+				try {
+					pieceMapper.insert(piece);
+				}catch (Exception e) {
+					response.setDomain(false);
+				}
+			}
+			for (Penetration penetration : report2.getPenetrations()) {
+				penetration.setReportIdx(report2.getId());
+				try {
+					penetrationMapper.insert(penetration);
+				}catch (Exception e) {
+					response.setDomain(false);
+				}
+			}
+			response.setDomain(true);
+		}
+		
+		return response;
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "/device/login", method = RequestMethod.POST)

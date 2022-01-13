@@ -6,6 +6,9 @@
 			<c:when test="${sessionInfo.role == 0}">
 				<a href="${pageContext.request.contextPath}/group/list"><img src="${pageContext.request.contextPath}/images/logo.png" class="로고"></a>
 			</c:when>
+			<c:when test="${sessionInfo.role == 2}">
+				<a href="${pageContext.request.contextPath}/construction/list?groupIdx=${sessionInfo.groupIdx}"><img src="${pageContext.request.contextPath}/images/logo.png" class="로고"></a>
+			</c:when>
 			<c:otherwise>
 				<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${sessionInfo.constructionIdx}"><img src="${pageContext.request.contextPath}/images/logo.png" class="로고"></a>
 			</c:otherwise>
@@ -14,16 +17,28 @@
 	<ul id="gnb">
 		<c:choose>
 			<c:when test="${sessionInfo.role == 0}">
-			<li class='sub-menu'>
-				<a href="${pageContext.request.contextPath}/group/list"><img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">시공사</a>
-			</li>
-			<li class='sub-menu'>
-				<a href="${pageContext.request.contextPath}/construction/list"><img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">전체 협력사</a>
-			</li>
-			</c:when>
-			<c:when test="${sessionInfo.role > 0}">
 				<li class='sub-menu'>
-					<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${sessionInfo.constructionIdx}"><img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">기기관리</a>
+					<a href="${pageContext.request.contextPath}/group/list">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">시공사
+					</a>
+					<a href="${pageContext.request.contextPath}/construction/list"  class="on">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png"  class="menu_icon">전체 협력사
+					</a>
+				</li>
+				
+			</c:when>
+			<c:when test="${sessionInfo.role == 1}">
+				<li class='sub-menu'>
+					<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${sessionInfo.constructionIdx}" class="on">
+						<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">기기관리
+					</a>
+				</li>
+			</c:when>
+			<c:when test="${sessionInfo.role == 2}">
+				<li class='sub-menu'>
+					<a href="${pageContext.request.contextPath}/construction/list?groupIdx=${sessionInfo.groupIdx}" class="on">
+						<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">협력사
+					</a>
 				</li>
 			</c:when>
 		</c:choose>

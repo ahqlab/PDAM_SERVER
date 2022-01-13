@@ -60,6 +60,7 @@ public class ConnectStatsExcelView extends AbstractExcelView
     sheet.setMargin((short)1, 0.2D);
 
     sheet.setColumnWidth(1, 3000);
+    
     setExcelTitleLayoutSetting(sheet, workbook);
     setColunmLabelLayoutSettiog(sheet, workbook);
 
@@ -143,7 +144,12 @@ public class ConnectStatsExcelView extends AbstractExcelView
   private void createColunm(HSSFSheet sheet, HSSFWorkbook workbook, List<Report> reportList) {
     for (int i = 0; i < reportList.size(); i++) {
       HSSFRow row1 = sheet.createRow(i + tableValueStartIndex);
-
+      
+      if(i == 3 || i == 4 ) {
+    	  sheet.autoSizeColumn(i);
+          sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 512 );
+      }
+      
       String[] strings = { String.valueOf(i + 1), 
         ((Report)reportList.get(i)).getCurrentDateTime(), 
         ((Report)reportList.get(i)).getPileType(), 
@@ -172,7 +178,7 @@ public class ConnectStatsExcelView extends AbstractExcelView
         "", 
         ((Report)reportList.get(i)).getAvgPenetrationValue(), 
         ((Report)reportList.get(i)).getTotalPenetrationValue(), 
-        ""
+        ((Report)reportList.get(i)).getBigo(), 
         //,((Report)reportList.get(i)).getHammaEfficiency() 
         };
 
@@ -267,13 +273,13 @@ public class ConnectStatsExcelView extends AbstractExcelView
   {
     HSSFRow row1 = sheet.createRow(tableLabelStartIndex);
 
-    //setColumnLabels(workbook, row1, new String[] { "번호", "시공일", "파일종류", "공법", "위치", "파일번호", "파일규격 \n( D )", "파일구분", "", "", "", "", "", "이음개소\n( EA )", "천공깊이\n( M )", "관잎깊이\n( M )", "파일잔량\n( M )", "공삭공\n( M )", "헤머무게\n( Ton )", "낙하높이\n( M )", "관리기준\n( mm )", "관입량 자동 측정( mm )", "", "", "", "", "", "", "비고", "해머효율\n( % )" });
-    setColumnLabels(workbook, row1, new String[] { "번호", "시공일", "파일종류", "공법", "위치", "파일번호", "파일규격 \n( D )", "파일구분", "", "", "", "", "", "이음개소\n( EA )", "천공깊이\n( M )", "관잎깊이\n( M )", "파일잔량\n( M )", "공삭공\n( M )", "헤머무게\n( Ton )", "낙하높이\n( M )", "관리기준\n( mm )", "관입량 자동 측정( mm )", "", "", "", "", "", "", "비고" });
+    //setColumnLabels(workbook, row1, new String[] { "번호", "시공일", "파일종류", "시공공법", "시공위치", "파일번호", "파일규격 \n( D )", "파일구분", "", "", "", "", "", "이음개소\n( EA )", "천공깊이\n( M )", "관잎깊이\n( M )", "파일잔량\n( M )", "공삭공\n( M )", "헤머무게\n( Ton )", "낙하높이\n( M )", "관리기준\n( mm )", "관입량 자동 측정( mm )", "", "", "", "", "", "", "비고", "해머효율\n( % )" });
+    setColumnLabels(workbook, row1, new String[] { "번호", "시공일", "파일종류", "시공공법", "시공위치", "파일번호", "파일규격 \n( D )", "파일구분", "", "", "", "", "", "이음개소\n( EA )", "천공깊이\n( M )", "관잎깊이\n( M )", "파일잔량\n( M )", "공삭공\n( M )", "헤머무게\n( Ton )", "낙하높이\n( M )", "관리기준\n( mm )", "관입량 자동 측정( mm )", "", "", "", "", "", "", "비고" });
 
     HSSFRow row2 = sheet.createRow(tableLabelEndIndex);
 
-    //setColumnLabels(workbook, row2, new String[] { "번호", "시공일", "파일종류", "공법", "위치", "파일번호", "파일규격 D", "단본", "하단", "중단", "중단", "상단", "합계", "이음개소", "천공깊이", "관잎깊이", "파일잔량", "공삭공", "헤머무게", "낙하높이", "관리기준", "1회", "2회", "3회", "4회", "5회", "평균관입", "최종관입", "비고", "해머효율" });
-    setColumnLabels(workbook, row2, new String[] { "번호", "시공일", "파일종류", "공법", "위치", "파일번호", "파일규격 D", "단본", "하단", "중단", "중단", "상단", "합계", "이음개소", "천공깊이", "관잎깊이", "파일잔량", "공삭공", "헤머무게", "낙하높이", "관리기준", "1회", "2회", "3회", "4회", "5회", "평균관입", "최종관입", "비고" });
+    //setColumnLabels(workbook, row2, new String[] { "번호", "시공일", "파일종류", "시공공법", "시공위치", "파일번호", "파일규격 D", "단본", "하단", "중단", "중단", "상단", "합계", "이음개소", "천공깊이", "관잎깊이", "파일잔량", "공삭공", "헤머무게", "낙하높이", "관리기준", "1회", "2회", "3회", "4회", "5회", "평균관입", "최종관입", "비고", "해머효율" });
+    setColumnLabels(workbook, row2, new String[] { "번호", "시공일", "파일종류", "시공공법", "시공위치", "파일번호", "파일규격 D", "단본", "하단", "중단", "중단", "상단", "합계", "이음개소", "천공깊이", "관잎깊이", "파일잔량", "공삭공", "헤머무게", "낙하높이", "관리기준", "1회", "2회", "3회", "4회", "5회", "평균관입", "최종관입", "비고" });
   }
 
   private void setColumn(HSSFWorkbook workbook, HSSFRow row1, String[] strings)

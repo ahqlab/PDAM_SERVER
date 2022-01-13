@@ -66,10 +66,17 @@ public class Report implements Domain {
 	private float gongSac;
 	
 	private String bigo;
+	
+	private int todayConstruction;
+	
+	private int totalConstruction;
+	
+	private int isDel;
 
 	public float getGongSac() {
 		return Float.parseFloat(String.format("%.1f", gongSac));
 	}
+	
 	public void setGongSac(float gongSac) {
 		this.gongSac = gongSac;
 	}

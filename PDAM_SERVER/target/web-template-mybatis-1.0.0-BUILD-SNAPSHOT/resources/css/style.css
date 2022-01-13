@@ -208,14 +208,10 @@ button:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    
-   
 }
 #login_wrap .login_form {
 	overflow:hidden;
-	text-align: center;
-	 
-}
+	}
 #login_wrap .login_form .login_div{
 	background:#f4f4f4;
 	border:1px #c2c2c2 solid;
@@ -223,7 +219,6 @@ button:focus {
 	height:367px;
 	margin-top:20px;
 	padding-top:60px;
-	display: inline-block;
 	}
 #login_wrap .login_form .login_div .title {
 	font-size:30px; 
@@ -446,6 +441,20 @@ button:focus {
 
 .right_content .table01_content .table_list .table01 tr:nth-child(2n-1){background:#f5f5f5;}
 
+.nomal_btn{
+	width:100px;
+	height:45px;
+	line-height:41px; 
+	color:#ffffff; 
+	font-weight:500;
+	text-align:Center;
+	bottom:15px;
+	font-size : 20px;
+	background:#077b9c;
+	right:20px;
+	cursor:pointer;
+}
+
 .white_btn {
 	width:100px;
 	height:45px;
@@ -512,7 +521,13 @@ button:focus {
 }
 
 
-
+.right_content .table01_content .table_white_form2 {
+    width: 1400px;
+    overflow: hidden;
+    margin: 80px auto 0px;
+    height: 433px;
+    overflow-y: auto;
+}
 
 
 .right_content .table01_content .table_white_form {
@@ -557,7 +572,7 @@ button:focus {
 	padding-left:20px;
 	color:#414141;
 	font-size:16px;
-	}
+}
 .btn_box {display:table;margin:30px auto 0px;}
 .btn_box .button01{
 	width:183px;
@@ -593,8 +608,28 @@ button:focus {
 	text-align:center;
 	cursor:pointer;
 	}
-
-
+.btn_box .button04{
+	width:183px;
+	height:41px;
+	background:#ff0000;
+	float:left;
+	border:none;
+	color:#ffffff;
+	font-size:16px;
+	text-align:center;
+	cursor:pointer;
+}
+.btn_box .button041{
+	width:183px;
+	height:41px;
+	background:#077b9c;
+	float:left;
+	border:none;
+	color:#ffffff;
+	font-size:16px;
+	text-align:center;
+	cursor:pointer;
+}
 
 .right_content .table01_content .table_list .table02{
 	border-collapse: collapse;

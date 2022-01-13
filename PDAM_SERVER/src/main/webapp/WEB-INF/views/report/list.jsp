@@ -25,6 +25,46 @@ $(document).ready( function() {
      }); */
 });
 
+function doRestore(){
+	var index = getCheckdCheckboxIndex();
+	if(index != null){
+		var isDel = document.getElementsByName("isDel");
+		var selectIsDel = Number(isDel[index].value);
+		
+		if(selectIsDel == 1){
+			var id = document.getElementsByName("id");
+			var idx = Number(id[index].value);
+			var result = confirm("삭제된 항목을 복구하시겠습니까?");
+			if(result){
+				if(result){
+					jQuery.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/report/doRestore",
+						data: {
+							id : idx
+						}, 
+						dataType : "JSON", // 옵션이므로 JSON으로 받을게 아니면 안써도 됨
+						success : function(data) {
+							if(data == true){
+								alert('복구되었습니다.');
+								history.go(0);
+							}
+						},
+						complete : function(data) {
+						},
+						error : function(xhr, status, error) {
+						}
+					}); 
+				}
+			}
+		}else{
+			alert("삭제되지 않은 항목입니다.");
+		}
+	}else{
+		alert('선택된 항목이 없습니다.');
+	}
+}
+
 function doDelete(){
 	var index = getCheckdCheckboxIndex();
 	if(index != null){
@@ -60,8 +100,24 @@ function doDelete(){
 function onClickReportUpdate(){
 	
 	var role = ${sessionInfo.role};
-	
 	var index = getCheckdCheckboxIndex();
+	
+	if(index != null){
+		var isDel = document.getElementsByName("isDel");
+		var selectIsDel = Number(isDel[index].value);
+		if(selectIsDel == 1){
+			alert('삭제된 항목은 수정할 수 없습니다.');
+			var obj = document.getElementsByName("selectOne");
+			obj[index].checked = false;
+			return;
+		}
+	}else{
+		alert('선택된 항목이 없습니다.');
+		return;
+	}
+	
+	
+	
 	var id = document.getElementsByName("id");
 	var pileType = document.getElementsByName("pileType");
 	var method = document.getElementsByName("method");
@@ -103,8 +159,7 @@ function onClickReportUpdate(){
 					id : Number(pieceId[i].value) != Number(0) ? Number(pieceId[i].value) : Number(0),
 					reportIdx :Number(id[index].value)
 			};
-			pieces.push(onePiece);
-			
+			pieces.push(onePiece);	
 		}
 		if(role == 0){
 			var penetrationss = [];
@@ -206,28 +261,41 @@ function onClickReportUpdate(){
 	function doOpenCheck(chk, rowindex) {
 				
 		var role = ${sessionInfo.role};
-
-		//alert('role : ' + role ); 
-		
 		var obj = document.getElementsByName("selectOne");
 		var index = rowindex;
 		
 		for (var i = 0; i < $('#reportTable tr').length; i++) {
 			if (i == rowindex) {
 				if (obj[rowindex].checked) {
-					$('#reportTable tr:eq(' + i + ')').css("background-color",
-							"#8dc5fc");
+					var isDel = document.getElementsByName("isDel");
+					var selectIsDel = Number(isDel[i].value);
+					if(selectIsDel == 1){
+						$('#reportTable tr:eq(' + i + ')').css("background-color", "#ff0000");
+					}else{
+						$('#reportTable tr:eq(' + i + ')').css("background-color", "#8dc5fc");
+					}
 				} else {
-					$('#reportTable tr:eq(' + i + ')').css("background-color",
-							"white");
+					var isDel = document.getElementsByName("isDel");
+					var selectIsDel = Number(isDel[i].value);
+					if(selectIsDel == 1){
+						$('#reportTable tr:eq(' + i + ')').css("background-color", "#ff0000");
+					}else{
+						$('#reportTable tr:eq(' + i + ')').css("background-color", "white");
+					}
+					
 				}
 			} else {
-				$('#reportTable tr:eq(' + i + ')').css("background-color",
-						"white");
+				//선택하지 않은것
+				var isDel = document.getElementsByName("isDel");
+				var selectIsDel = Number(isDel[i].value);
+				if(selectIsDel == 1){
+					$('#reportTable tr:eq(' + i + ')').css("background-color", "#ff0000");
+				}else{
+					$('#reportTable tr:eq(' + i + ')').css("background-color","white");
+				}
 			}
 		}
 
-		
 		var id = document.getElementsByName("id");
 		var pileType = document.getElementsByName("pileType");
 		var method = document.getElementsByName("method");
@@ -242,13 +310,10 @@ function onClickReportUpdate(){
 		var managedStandard = document.getElementsByName("managedStandard");
 		
 		//var ultimateBearingCapacity = document.getElementsByName("ultimateBearingCapacity");
-		
 		var crossSection = document.getElementsByName("crossSection");
 		var hammaEfficiency = document.getElementsByName("hammaEfficiency");
 		var modulusElasticity = document.getElementsByName("modulusElasticity");
 		var bigo = document.getElementsByName("bigo");
-		
-		
 		
 		var pieceId = document.getElementsByName("pieceId[" + index + "]");
 		var pieceName = document.getElementsByName("pieceName[" + index + "]");
@@ -266,8 +331,6 @@ function onClickReportUpdate(){
 					pntrs[l].disabled = true;
 				}
 			}
-			
-			
 			
 			pileType[j].disabled = true;
 			method[j].disabled = true;
@@ -298,33 +361,35 @@ function onClickReportUpdate(){
 		
 		
 		if (obj[index].checked) {
-			for (var y = 0; y < piece.length; y++) {
-				piece[y].disabled = false;
-			}
-			if(role == 0){
-				for (var l = 0; l < pntrs.length; l++) {
-					pntrs[l].disabled = false;
+			var isDel = document.getElementsByName("isDel");
+			var selectIsDel = Number(isDel[index].value);
+			
+			if(selectIsDel == 0){
+				for (var y = 0; y < piece.length; y++) {
+					piece[y].disabled = false;
 				}
-			}
-		
-			
-			pileType[index].disabled = false;
-			method[index].disabled = false;
-			location[index].disabled = false;
-			pileNo[index].disabled = false;
-			pileStandard[index].disabled = false;
+				if(role == 0){
+					for (var l = 0; l < pntrs.length; l++) {
+						pntrs[l].disabled = false;
+					}
+				}
+				pileType[index].disabled = false;
+				method[index].disabled = false;
+				location[index].disabled = false;
+				pileNo[index].disabled = false;
+				pileStandard[index].disabled = false;
 
-			drillingDepth[index].disabled = false;
-			intrusionDepth[index].disabled = false;
-			hammaT[index].disabled = false;
-			fallMeter[index].disabled = false;
-			managedStandard[index].disabled = false;
-			
-			crossSection[index].disabled = false;
-			hammaEfficiency[index].disabled = false;
-			modulusElasticity[index].disabled = false;
-			bigo[index].disabled = false;
-			
+				drillingDepth[index].disabled = false;
+				intrusionDepth[index].disabled = false;
+				hammaT[index].disabled = false;
+				fallMeter[index].disabled = false;
+				managedStandard[index].disabled = false;
+				
+				crossSection[index].disabled = false;
+				hammaEfficiency[index].disabled = false;
+				modulusElasticity[index].disabled = false;
+				bigo[index].disabled = false;
+			} 
 			//ultimateBearingCapacity[index].disabled = false;
 		}else{
 			for (var y = 0; y < piece.length; y++) {
@@ -383,8 +448,7 @@ function onClickReportUpdate(){
 		$('#reportTable tr').css("background-color", "");
 		for (var i = 0; i < $('#reportTable tr').length; i++) {
 			if (i == rowid) {
-				$('#reportTable tr:rowindex:eq(' + i + ')').css(
-						"background-color", "#8dc5fc");
+				$('#reportTable tr:rowindex:eq(' + i + ')').css("background-color", "#8dc5fc");
 			}
 		}
 	}
@@ -405,8 +469,7 @@ function onClickReportUpdate(){
 
 	function downloadExcel() {
 		var para = document.location.href.split("?");
-		location.href = '${pageContext.request.contextPath}/report/download/excel?'
-				+ para[1];
+		location.href = '${pageContext.request.contextPath}/report/download/excel?' + para[1];
 	}
 
 	function doChecked(rowindex) {
@@ -417,19 +480,38 @@ function onClickReportUpdate(){
 	<div class="tab_menu">
 		<ul>
 			<li class="on">
-				<%-- <a href="${pageContext.request.contextPath}/device/list"> --%>
-					<%-- <img src="${pageContext.request.contextPath}/images/icon05_on.png" class="icon03"> --%>
-					${device.machineNumber} 시공현황
-				<!-- </a> -->
+				${device.machineNumber} 시공현황
 			</li>
 			<li>
+				<%-- <a href="${pageContext.request.contextPath}/ips/list?deviceIdx=${param.id}&constructionIdx=${param.constructionIdx}">
+					투입인원현황
+				</a> --%>
 				<a href="#">
-					<img src="${pageContext.request.contextPath}/images/icon03_off.png" class="icon03">투입인원현황
+					투입인원현황
 				</a>
 			</li>
 			<li>
+				<%-- <a href="${pageContext.request.contextPath}/eus/list?deviceIdx=${param.id}&constructionIdx=${param.constructionIdx}&erpDiv=1">
+					장비사용현황
+				</a> --%>
 				<a href="#">
-					<img src="${pageContext.request.contextPath}/images/icon03_off.png" class="icon03">주유현황
+					장비사용현황
+				</a>
+			</li>
+			<li>
+				<%-- <a href="${pageContext.request.contextPath}/oiluse/list?deviceIdx=${param.id}&constructionIdx=${param.constructionIdx}&erpDiv=2">
+					유류사용현황
+				</a> --%>
+				<a href="#">
+					유류사용현황
+				</a>
+			</li>
+			<li>
+				<%-- <a href="${pageContext.request.contextPath}/mis/list?deviceIdx=${param.id}&constructionIdx=${param.constructionIdx}&erpDiv=3">
+					
+				</a> --%>
+				<a href="#">
+					항타자재현황
 				</a>
 			</li>
 		</ul>
@@ -440,6 +522,7 @@ function onClickReportUpdate(){
 		<div class="search_div">
 			<form:form id="searchForm" commandName="domainParam" method="POST">
 			<form:hidden path="currentPage"/>
+	
 			<c:choose>
 				<c:when test="${param.mode != 'simple'}">				     
 					<c:choose>												 
@@ -451,7 +534,16 @@ function onClickReportUpdate(){
 					</c:choose>
 				</c:when>
 			</c:choose>
+			<c:choose>
+				<c:when test="${param.mode == 'simple'}">
+					<div  style="float: left; height: 100%; margin-top:20px;" class="input01">
+						<font color="white" size="6">총시공량 ${totalConstruction} 공</font> 
+					</div>
+				</c:when>
+			</c:choose>
+			
 			<div class="search_form01" style="float: right;">
+			
 				<input type="button" class="input01" value="총작업내역" onclick="location.href='${pageContext.request.contextPath}/report/list?id=${param.id}&type=all'">
 				<%-- <input type="button" class="input01" value="일별작업내역" onclick="location.href='${pageContext.request.contextPath}/report/list?id=${param.id}&type=date'"> --%>
 				<input type="button" class="input01" value="금일작업내역" onclick="location.href='${pageContext.request.contextPath}/report/list?id=${param.id}&date=today'">
@@ -462,7 +554,9 @@ function onClickReportUpdate(){
 				<c:when test="${param.mode != 'simple'}">
 					<input type="button" class="input01"  value="엑셀출력" onclick="javascript:downloadExcel();">
 				</c:when>
+				
 				</c:choose>
+				<input type="button" class="input01" value="휴지통">
 			</div>
 			</form:form>
 		</div>
@@ -475,8 +569,9 @@ function onClickReportUpdate(){
 						<tr>
 							<th style="width: 20%;">시공일</th>
 							<th style="width: 20%;">금일시공량</th>
-							<th style="width: 20%;">전일시공량</th>
-							<th style="width: 20%;">총시공량</th>
+							<th style="width: 20%;">&nbsp;</th>
+							<!-- <th style="width: 20%;">금일누적시공량</th> -->
+							<th style="width: 20%;">&nbsp;</th>
 							<th style="width: 20%;">&nbsp;</th>
 						</tr>
 					</table>
@@ -494,11 +589,11 @@ function onClickReportUpdate(){
 						<th style="width: 2%;" rowspan="2">순번</th>
 						<th style="width: 4%;" rowspan="2">시공일</th>
 						<th style="width: 3%;" rowspan="2">파일종류</th>
-						<th style="width: 5%;" rowspan="2">공법</th>
-						<th style="width: 5%;" rowspan="2">위치</th>
+						<th style="width: 5%;" rowspan="2">시공공법</th>
+						<th style="width: 5%;" rowspan="2">시공위치</th>
 						<th style="width: 4%;" rowspan="2">파일번호</th>
 						<th style="width: 3%;" rowspan="2">파일규격</th>
-						<th colspan="6">파일규격</th>
+						<th colspan="6">파일구분</th>
 						
 						<th style="width: 2%;" rowspan="2">이음<br>(개소)</th>
 						<th style="width: 3%;" rowspan="2">천공깊이(M)</th>
@@ -522,7 +617,11 @@ function onClickReportUpdate(){
 						<th style="width: 3%;" rowspan="2">평균관입(mm)</th>
 						<th style="width: 3%;" rowspan="2">최종관입(mm)</th>
 						<th style="width: 3%;" rowspan="2">극한지지력<br>(kN)</th>
-					
+						<c:choose>
+						<c:when test="${sessionInfo.role > 0}">
+							<th style="width: 4%;" rowspan="2">비고</th>
+						</c:when>
+						</c:choose>
 						<c:choose>
 							<c:when test="${sessionInfo.role == 0}">
 								<th style="width: 3%;" rowspan="2">헤머효율(%)</th>
@@ -573,7 +672,7 @@ function onClickReportUpdate(){
 						</c:choose>		
 					</td>
 					<td  style="width: 20%;">
-						&nbsp;
+						${domain.todayConstruction} 공
 					</td>
 					<td  style="width: 20%;">
 						&nbsp;
@@ -602,11 +701,27 @@ function onClickReportUpdate(){
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				<tr>
+				<c:choose>
+					<c:when test="${domain.isDel == 1}">
+						<tr style="background-color: #ff0000;">
+					</c:when>
+					<c:otherwise>
+						<tr>
+					</c:otherwise>
+				</c:choose>
+				
 					<c:choose>
 						<c:when test="${sessionInfo.role == 0  || sessionInfo.hiddenManager == true}">
 							<td style="width: 2%;">
-								<input type="checkbox" id="selectOne" name="selectOne" onclick="doOpenCheck(this, this.parentNode.parentNode.rowIndex);">
+								<c:choose>
+									<c:when test="${domain.isDel == 1}">
+										<!-- 삭제된것에 클릭 -->
+										<input type="checkbox" id="selectOne" name="selectOne" onclick="doOpenCheck(this, this.parentNode.parentNode.rowIndex);">
+									</c:when>
+									<c:otherwise>
+										<input type="checkbox" id="selectOne" name="selectOne" onclick="doOpenCheck(this, this.parentNode.parentNode.rowIndex);">
+									</c:otherwise>
+								</c:choose>
 							</td>
 						</c:when>
 					</c:choose>
@@ -617,6 +732,7 @@ function onClickReportUpdate(){
 						<a>
 							<font style="font-size: 14px;">${domain.currentDateTime}</font>
 							<input type="hidden" id="id" name="id" value="${domain.id}" >
+							<input type="hidden" id="isDel" name="isDel" value="${domain.isDel}" >
 						</a>
 					</td>
 				 	<td style="width: 3%;">
@@ -721,52 +837,6 @@ function onClickReportUpdate(){
 							</td>
 						</c:when>
 					</c:choose>
-					
-					
-					<%-- <td>
-						<c:choose>
-							<c:when test="${fn:length(domain.piece) >= 4}">
-								<input type="text" id="piece[${status.index}]" name="piece[${status.index}]" style="width: 30px;" value="${domain.piece[2].value}">
-								<input type="hidden" id="pieceId[${status.index}]" name="pieceId[${status.index}]" value="${domain.piece[2].id}">
-								<input type="hidden" id="pieceName[${status.index}]" name="pieceName[${status.index}]" value="${domain.piece[2].name}">
-								<input type="text" id="piece[${status.index}]" name="piece[${status.index}]" style="width: 30px;" value="${domain.piece[fn:length(domain.piece) - 3].value}">
-								<input type="hidden" id="pieceId[${status.index}]" name="pieceId[${status.index}]" value="${domain.piece[fn:length(domain.piece) - 3].id}">
-								<input type="hidden" id="pieceName[${status.index}]" name="pieceName[${status.index}]" value="${domain.piece[fn:length(domain.piece) - 3].name}">
-							</c:when>
-							<c:when test="${fn:length(domain.piece) < 4}">
-								<input type="text" id="piece[${status.index}]" name="piece[${status.index}]" style="width: 30px;" value="">
-								<input type="hidden" id="pieceId[${status.index}]" name="pieceId[${status.index}]" value="">
-								<input type="hidden" id="pieceName[${status.index}]" name="pieceName[${status.index}]" value="">
-							</c:when>
-						</c:choose>
-					</td> --%>
-					<%-- <td>
-						<c:choose>
-							<c:when test="${fn:length(domain.piece) >= 5}">
-								<input type="text" id="piece[${status.index}]" name="piece[${status.index}]" style="width: 30px;" value="${domain.piece[3].value}">
-								<input type="hidden" id="pieceId[${status.index}]" name="pieceId[${status.index}]" value="${domain.piece[3].id}">
-								<input type="hidden" id="pieceName[${status.index}]" name="pieceName[${status.index}]" value="${domain.piece[3].name}">
-								<input type="text" id="piece[${status.index}]" name="piece[${status.index}]" style="width: 30px;" value="${domain.piece[fn:length(domain.piece) - 2].value}">
-								<input type="hidden" id="pieceId[${status.index}]" name="pieceId[${status.index}]" value="${domain.piece[fn:length(domain.piece) - 2].id}">
-								<input type="hidden" id="pieceName[${status.index}]" name="pieceName[${status.index}]" value="${domain.piece[fn:length(domain.piece) - 2].name}">
-							</c:when>
-							<c:when test="${fn:length(domain.piece) < 5}">
-								<input type="text" id="piece[${status.index}]" name="piece[${status.index}]" style="width: 30px;" value="">
-								<input type="hidden" id="pieceId[${status.index}]" name="pieceId[${status.index}]" value="">
-								<input type="hidden" id="pieceName[${status.index}]" name="pieceName[${status.index}]" value="">
-							</c:when>
-						</c:choose>
-					</td> --%>
-				<%-- 	<td>
-						<input type="text" id="piece[${status.index}]" name="piece[${status.index}]" style="width: 30px;" value="${domain.piece[fn:length(domain.piece) - 1].value}">
-						<input type="hidden" id="pieceId[${status.index}]" name="pieceId[${status.index}]" value="${domain.piece[fn:length(domain.piece) - 1].id}">
-						<input type="hidden" id="pieceName[${status.index}]" name="pieceName[${status.index}]" value="${domain.piece[fn:length(domain.piece) - 1].name}">
-						
-						<input type="text" id="piece[${status.index}]" name="piece[${status.index}]" style="width: 30px;" value="${domain.piece[fn:length(domain.piece) - 1].value}">
-						<input type="hidden" id="pieceId[${status.index}]" name="pieceId[${status.index}]" value="${domain.piece[fn:length(domain.piece) - 1].id}">
-						<input type="hidden" id="pieceName[${status.index}]" name="pieceName[${status.index}]" value="${domain.piece[fn:length(domain.piece) - 1].name}">
-						
-					</td> --%>
 					<td style="width: 2%;">${domain.totalConnectWidth}</td>
 					<td style="width: 2%;">
 						${domain.connectLength}
@@ -838,7 +908,7 @@ function onClickReportUpdate(){
 						<c:otherwise>
 							<td style="width: 3%;">
 								${domain.avgPenetrationValue}
-								<input type="hidden" id="avgPenetrationValue" name="avgPenetrationValue" value="${domain.avgPenetrationValue}" >
+								<input type="hidden" id="avgPenetrationValue" name="avgPenetrationValue" value="${domain.avgPenetrationValue}">
 							</td>
 						</c:otherwise>
 					</c:choose>
@@ -849,6 +919,24 @@ function onClickReportUpdate(){
 					<td style="width: 3%;">
 						${domain.ultimateBearingCapacity}
 					</td>
+					<c:choose>
+						<c:when test="${sessionInfo.role > 0}">
+							<c:choose>
+								<c:when test="${sessionInfo.hiddenManager == true}">
+									<td style="width: 4%;">
+										<input type="text" id="bigo" name="bigo"  disabled="disabled" style="width: 60px;"  value="${domain.bigo}"/>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td style="width: 4%;">
+										${domain.bigo}
+										<input type="hidden" id="bigo" name="bigo"  disabled="disabled" style="width: 70px;"  value="${domain.bigo}"/>
+									</td>
+								</c:otherwise>
+							</c:choose>
+						</c:when>
+					</c:choose>
+					
 					<c:choose>
 						<c:when test="${sessionInfo.role == 0}">
 							<td style="width: 3%;">
@@ -868,7 +956,7 @@ function onClickReportUpdate(){
 							<input type="hidden" id="hammaEfficiency" name="hammaEfficiency"  disabled="disabled" style="width: 50px;"  value="${domain.hammaEfficiency}"/>
 							<input type="hidden" id="modulusElasticity" name="modulusElasticity"  disabled="disabled" style="width: 50px;"  value="${domain.modulusElasticity}"/>
 							<input type="hidden" id="crossSection" name="crossSection"  disabled="disabled" style="width: 70px;"  value="${domain.crossSection}"/>
-							<input type="hidden" id="bigo" name="bigo"  disabled="disabled" style="width: 70px;"  value="${domain.bigo}"/>
+							<%-- <input type="hidden" id="bigo" name="bigo"  disabled="disabled" style="width: 70px;"  value="${domain.bigo}"/> --%>
 						</c:otherwise>
 					</c:choose> 
 				</tr>
@@ -878,28 +966,34 @@ function onClickReportUpdate(){
 		<c:choose>
 			<c:when test="${fn:length(domainList) == 0}">
 				<tr>
-					<c:choose>
-						<c:when test="${sessionInfo.role == 0}">
-							<td style="background: white;" colspan="28">등록된 데이터가 없습니다.</td>
-						</c:when>
-						<c:otherwise>
-							<td style="background: white;" colspan="28">등록된 데이터가 없습니다.</td>
-						</c:otherwise>
-					</c:choose>
-					
+				<c:choose>
+					<c:when test="${sessionInfo.role == 0}">
+						<td style="background: white;" colspan="28">등록된 데이터가 없습니다.</td>
+					</c:when>
+					<c:otherwise>
+						<td style="background: white;" colspan="28">등록된 데이터가 없습니다.</td>
+					</c:otherwise>
+				</c:choose>
 				</tr>
-				</c:when>
-			</c:choose>
+			</c:when>
+		</c:choose>
 		</table>
 		</div>
-
 		<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 			<c:choose>
 				<c:when test="${param.mode != 'simple'}">
 					 <c:choose>
-						<c:when test="${sessionInfo.role == 0  || sessionInfo.hiddenManager == true}">
+						<c:when test="${sessionInfo.role == 0}"> 
 							<div class="white_btn">
-								<a href="javascript:doDelete()">삭제</a>
+								<a style="color: white;" href="javascript:doDelete()">삭제</a>
+							</div>
+							<div class="white_btn2">
+								<a style="color: white;" href="javascript:doRestore()">복구</a>
+							</div>
+						 </c:when>
+						 <c:when test="${sessionInfo.hiddenManager == true}">
+					 		<div class="white_btn">
+								<a style="color: white;" href="javascript:doDelete()">삭제</a>
 							</div>
 						 </c:when>
 					</c:choose>

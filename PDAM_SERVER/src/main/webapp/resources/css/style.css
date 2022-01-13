@@ -468,7 +468,7 @@ button:focus {
 	background:#077b9c;
 	right:20px;
 	cursor:pointer;
-	}
+}
 .white_btn a {color:#ffffff;}
 
 .white_btn2 {
@@ -521,7 +521,13 @@ button:focus {
 }
 
 
-
+.right_content .table01_content .table_white_form2 {
+    width: 1400px;
+    overflow: hidden;
+    margin: 80px auto 0px;
+    height: 433px;
+    overflow-y: auto;
+}
 
 
 .right_content .table01_content .table_white_form {
@@ -566,7 +572,7 @@ button:focus {
 	padding-left:20px;
 	color:#414141;
 	font-size:16px;
-	}
+}
 .btn_box {display:table;margin:30px auto 0px;}
 .btn_box .button01{
 	width:183px;
@@ -602,8 +608,28 @@ button:focus {
 	text-align:center;
 	cursor:pointer;
 	}
-
-
+.btn_box .button04{
+	width:183px;
+	height:41px;
+	background:#ff0000;
+	float:left;
+	border:none;
+	color:#ffffff;
+	font-size:16px;
+	text-align:center;
+	cursor:pointer;
+}
+.btn_box .button041{
+	width:183px;
+	height:41px;
+	background:#077b9c;
+	float:left;
+	border:none;
+	color:#ffffff;
+	font-size:16px;
+	text-align:center;
+	cursor:pointer;
+}
 
 .right_content .table01_content .table_list .table02{
 	border-collapse: collapse;

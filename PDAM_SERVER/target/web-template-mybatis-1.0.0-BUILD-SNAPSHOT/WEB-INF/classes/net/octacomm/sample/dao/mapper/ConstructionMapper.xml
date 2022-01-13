@@ -15,7 +15,7 @@
        		<if test="param.startDate != null and param.startDate != '' and param.endDate != null and param.endDate != ''">
        			and date_format(createDate, '%Y-%m-%d') between  #{param.startDate}  and  #{param.endDate} 
        		</if>
-     		<if test="param.role gt 0"> 
+     		<if test="param.role == 1"> 
      			and id = #{param.constructionIdx} 
      		</if>
        </where>

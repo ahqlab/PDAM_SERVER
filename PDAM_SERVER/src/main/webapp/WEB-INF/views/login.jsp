@@ -25,18 +25,18 @@
     </script>
 	<!--login_wrap-->
 	
-    <div id="login_wrap" style="align-content: center; text-align:Center;"> 
+    <div id="login_wrap" style="align-content: center; text-align:Center;" align="center"> 
 		<!--로그인form-->
 		<form:form  action="${pageContext.request.contextPath}/login" commandName="domain" method="POST">
-		<div class="login_form">
+		<div class="login_form" style="">
 			<!-- <p style="text-align:Center;"><img src="${pageContext.request.contextPath}/images/logo.png" class="로고"></p> -->
-			<p style="text-align:Center;">
+			<p style="text-align:Center;" >
 				<font color="#ffffff" size="6">파일 항타 관입량 자동측정 시스템 </font>
 			</p>
 		 	<p style="text-align:Center;">
 				<font color="#ffffff" size="5">Pile Driving Automatic Measurement system</font>
 			</p>
-			<div class="login_div" >
+			<div class="login_div"  style=" width: 100%;">
 				<p class="title">PDAM Login<p>
 				<div class="form01">
 					<img src="${pageContext.request.contextPath}/images/icon01.png" class="icon01">

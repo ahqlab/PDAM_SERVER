@@ -2,8 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.octacomm.sample.dao.mapper.ReportMapper">
-
 	<sql id="condition">
+        <where>
+        	A.deviceIdx = B.id AND B.constructionIdx = C.id
+        	<if test="param.id gt 0">
+       			and ${param.id} = A.deviceIdx
+       		</if>
+       		<if test="param.role == 1"> 
+     			and A.isdel = 0 
+     		</if>
+        	<if test="param.searchField != null and param.searchField != '' and param.searchWord != null and param.searchWord != ''">
+       			and ${param.searchField} like '%${param.searchWord}%'
+       		</if>
+      		<if test="param.startDate != null and param.startDate != '' and param.endDate != null and param.endDate != ''">
+       			and date(A.currentDateTime) <![CDATA[>=]]> #{param.startDate} and date(A.currentDateTime) <![CDATA[<=]]> #{param.endDate} 
+       		</if>
+       </where>
+	</sql>
+	
+	<sql id="excelCondition">
         <where>
         	A.deviceIdx = B.id AND B.constructionIdx = C.id
         	<if test="param.id gt 0">
@@ -13,13 +30,11 @@
        			and ${param.searchField} like '%${param.searchWord}%'
        		</if>
       		<if test="param.startDate != null and param.startDate != '' and param.endDate != null and param.endDate != ''">
-       			
        			and date(A.currentDateTime) <![CDATA[>=]]> #{param.startDate} and date(A.currentDateTime) <![CDATA[<=]]> #{param.endDate} 
        		</if>
        </where>
 	</sql>
 	
-		
 	<select id="getCountByParam" resultType="_int">
 		SELECT 
 			COUNT(*)
@@ -50,7 +65,7 @@
 				A.hammaEfficiency ,
 				A.modulusElasticity ,
 				A.isDel, 
-				A.bigo, 
+				IF(A.bigo = 'null','',A.bigo) as bigo, 
 				A.createDate ,
 				case when @grp = date_format(A.currentDateTime, '%Y-%m-%d') then @rownum:=@rownum + 1 else @rownum :=1 end as rownum,
 				(@grp := date_format(A.currentDateTime, '%Y-%m-%d')) as dum 
@@ -83,7 +98,8 @@
     </select>
    
     <select id="getListByParam" resultType="Report">
-    	SELECT 
+    	SELECT
+    		(select count(*) from TB_REPORT WHERE TB_REPORT.deviceIdx = TB.deviceIdx and TB_REPORT.currentDateTime = TB.currentDateTime and TB_REPORT.isDel = 0) as todayConstruction, 
 			name ,
 			lavelNo ,
 			machineNumber , 
@@ -139,7 +155,7 @@
 				A.hammaEfficiency ,
 				A.modulusElasticity ,
 				A.isDel, 
-				A.bigo, 
+				IF(A.bigo = 'null','',A.bigo) as bigo , 
      			A.createDate ,
 				case when @grp = date_format(A.currentDateTime, '%Y-%m-%d') then @rownum:=@rownum + 1 else @rownum :=1 end as rownum,
 				(@grp := date_format(A.currentDateTime, '%Y-%m-%d')) as dum 
@@ -232,16 +248,14 @@
 				A.hammaEfficiency ,
 				A.modulusElasticity ,
 				A.createDate ,
-				A.bigo ,
+				IF(A.bigo = 'null','',A.bigo) as bigo ,
 				case when @grp = date_format(A.createDate, '%Y-%m-%d') then @rownum:=@rownum + 1 else @rownum :=1 end as rownum,
 				(@grp := date_format(A.currentDateTime, '%Y-%m-%d')) as dum 
 			FROM TB_REPORT A , TB_DEVICE B, TB_CONSTRUCTION C , (select @rownum:=0, @grp:='') r 
-	    	<include refid="condition"/>
+	    	<include refid="excelCondition"/>
 	    	<!--  -->
 	    	ORDER BY  A.createDate asc ) as TB
 	    	where 1=1
-	    	
-	    	
 	    	<choose>
 	    		<when test="param.type != null and param.type != '' and param.type != null and param.type != ''">
 	    			<choose>
@@ -269,9 +283,25 @@
     
     <insert id="insert" parameterType="Report">
 	    INSERT INTO TB_REPORT
-	    ( deviceIdx, currentDateTime, location, pileNo , pileStandard, drillingDepth , intrusionDepth, balance, connectLength, managedStandard, avgPenetrationValue, totalPenetrationValue, hammaT, fallMeter, pileType, method, totalConnectWidth, ultimateBearingCapacity, crossSection , hammaEfficiency , modulusElasticity , bigo , createDate  )
+	    ( deviceIdx, currentDateTime, location, pileNo , pileStandard, drillingDepth , intrusionDepth, balance, connectLength, managedStandard, avgPenetrationValue, totalPenetrationValue, hammaT, fallMeter, pileType, method, totalConnectWidth, ultimateBearingCapacity, crossSection , hammaEfficiency , modulusElasticity 
+	    	
+	    	<choose>
+	    		<when test="bigo != null and bigo != '' and bigo != null and bigo != ''">
+	    		, bigo 
+	    		</when>
+	    	</choose>
+	    	
+	    	, createDate  )
 	     VALUES 
-	     ( #{deviceIdx}, #{currentDateTime}, #{location}, #{pileNo} , #{pileStandard},  #{drillingDepth} , #{intrusionDepth}, #{balance}, #{connectLength}, #{managedStandard}, #{avgPenetrationValue}, #{totalPenetrationValue}, #{hammaT}, #{fallMeter},  #{pileType}, #{method}, #{totalConnectWidth},  #{ultimateBearingCapacity} , #{crossSection} , #{hammaEfficiency} , #{modulusElasticity} ,  #{bigo} , now() )
+	     ( #{deviceIdx}, #{currentDateTime}, #{location}, #{pileNo} , #{pileStandard},  #{drillingDepth} , #{intrusionDepth}, #{balance}, #{connectLength}, #{managedStandard}, #{avgPenetrationValue}, #{totalPenetrationValue}, #{hammaT}, #{fallMeter},  #{pileType}, #{method}, #{totalConnectWidth},  #{ultimateBearingCapacity} , #{crossSection} , #{hammaEfficiency} , #{modulusElasticity} 
+	     	
+	     	<choose>
+	    		<when test="bigo != null and bigo != '' and bigo != null and bigo != ''">
+	    		,  #{bigo} 
+	    		</when>
+	    	</choose>
+	     	
+	     	, now() )
 	    <selectKey resultType="int" keyProperty="id" order="AFTER">
         SELECT LAST_INSERT_ID()
     	</selectKey>
@@ -279,13 +309,24 @@
     
     <insert id="insert2" parameterType="Report">
 	    INSERT INTO TB_REPORT
-	    ( deviceIdx, currentDateTime, location, pileNo , pileStandard, drillingDepth , intrusionDepth, balance, connectLength, managedStandard, avgPenetrationValue, totalPenetrationValue, hammaT, fallMeter, pileType, method, totalConnectWidth, ultimateBearingCapacity , crossSection , hammaEfficiency , modulusElasticity , bigo , createDate  )
+	    ( deviceIdx, currentDateTime, location, pileNo , pileStandard, drillingDepth , intrusionDepth, balance, connectLength, managedStandard, avgPenetrationValue, totalPenetrationValue, hammaT, fallMeter, pileType, method, totalConnectWidth, ultimateBearingCapacity , crossSection , hammaEfficiency , modulusElasticity 
+	    	<choose>
+	    		<when test="bigo != null and bigo != '' and bigo != null and bigo != ''">
+	    		, bigo 
+	    		</when>
+	    	</choose>
+	    	, createDate  )
 	     VALUES 
-	     ( #{deviceIdx}, #{currentDateTime}, #{location}, #{pileNo} , #{pileStandard},  #{drillingDepth} , #{intrusionDepth}, #{balance}, #{connectLength}, #{managedStandard}, #{avgPenetrationValue}, #{totalPenetrationValue}, #{hammaT}, #{fallMeter},  #{pileType}, #{method}, #{totalConnectWidth},   #{ultimateBearingCapacity}, #{crossSection} , #{hammaEfficiency} , #{modulusElasticity} ,  #{bigo} , #{createDate} )
+	     ( #{deviceIdx}, #{currentDateTime}, #{location}, #{pileNo} , #{pileStandard},  #{drillingDepth} , #{intrusionDepth}, #{balance}, #{connectLength}, #{managedStandard}, #{avgPenetrationValue}, #{totalPenetrationValue}, #{hammaT}, #{fallMeter},  #{pileType}, #{method}, #{totalConnectWidth},   #{ultimateBearingCapacity}, #{crossSection} , #{hammaEfficiency} , #{modulusElasticity} 
+	     	<choose>
+	    		<when test="bigo != null and bigo != '' and bigo != null and bigo != ''">
+	    		,  #{bigo} 
+	    		</when>
+	    	</choose>
+	     	, #{createDate} )
 	    <selectKey resultType="int" keyProperty="id" order="AFTER">
-        SELECT LAST_INSERT_ID()
-    </selectKey>
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
     </insert>  
-      
-    
+       
 </mapper>

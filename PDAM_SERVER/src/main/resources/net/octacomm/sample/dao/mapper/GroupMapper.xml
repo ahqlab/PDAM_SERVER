@@ -18,30 +18,49 @@
     </select>
    
     <select id="getListByParam" resultType="Group">
-    	SELECT 
-    		idx , 
-		  	groupName , 
-		  	(SELECT COUNT(*) FROM 
-		  		(SELECT * FROM 
-		  		TB_CONSTRUCTION 
-				WHERE isDel = 0 
-				AND conduct = 0) A , TB_DEVICE B 
-				WHERE A.ID = B.constructionIdx 
-				AND A.groupIdx = idx 
-				AND B.isDel = 0 
-				AND B.conduct = 0 ) as deviceAmount, 
-		  	(SELECT COUNT(*) FROM 
-		  	TB_CONSTRUCTION A  
-		  	WHERE  A.groupIdx = idx 
-		  	AND A.conduct = 0 
-		  	AND A.isDel = 0 ) as cprtCompanyAmount, 
-		  	isDel , 
-		 	createDate , 
-		  	lastModifiedDate
-    	FROM TB_GROUP
-    	<include refid="condition"/>
-    	ORDER BY idx DESC
-        LIMIT #{pageSize} OFFSET #{startRow}
+		SELECT 
+		   idx,
+	       groupName,
+	       deviceAmount,
+	       franchAmount,
+	       cprtCompanyAmount,
+	       isDel,
+	       createDate,
+	       lastModifiedDate,
+	       concat(cprtCompanyAmount, deviceAmount, franchAmount) AS fieldSort
+		FROM (SELECT idx,
+		             groupName,
+		             (SELECT COUNT(*)
+		              FROM (SELECT *
+		                    FROM TB_CONSTRUCTION
+		                    WHERE isDel = 0 AND conduct = 0) A,
+		                   TB_DEVICE B
+		              WHERE     A.ID = B.constructionIdx
+		                    AND A.groupIdx = idx
+		                    AND B.isDel = 0
+		                    AND B.conduct = 0)
+		                AS deviceAmount,
+		             (SELECT COUNT(*)
+		              FROM (SELECT *
+		                    FROM TB_CONSTRUCTION
+		                    WHERE isDel = 0 AND conduct = 0) A,
+		                   TB_DEVICE B
+		              WHERE     A.ID = B.constructionIdx
+		                    AND A.groupIdx = idx
+		                    AND B.isDel = 0
+		                    AND B.conduct = 2)
+		                AS franchAmount,
+		             (SELECT COUNT(*)
+		              FROM TB_CONSTRUCTION A
+		              WHERE A.groupIdx = idx AND A.conduct = 0 AND A.isDel = 0)
+		                AS cprtCompanyAmount,
+		             isDel,
+		             createDate,
+		             lastModifiedDate
+		      FROM TB_GROUP
+		      <include refid="condition"/>
+		      ORDER BY idx DESC) NN
+		ORDER BY FIELD(fieldSort, '000') ASC, idx DESC
     </select>   
     
 </mapper>

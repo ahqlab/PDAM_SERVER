@@ -157,13 +157,13 @@
 					</td>
 				</tr>
 				<tr>
-					<td>라벨기 번호</td>
+					<td>자동측정기 S/N</td>
 					<td>
 						<form:input path="lavelNo" class="input01"/>
 					</td>
 				</tr>
 				<tr>
-					<td>블루투스 번호</td>
+					<td>블루투스 No</td>
 					<td><form:input path="bluetoothNo" class="input01"/></td>
 				</tr>
 				<tr>
@@ -171,7 +171,7 @@
 					<td><form:input path="tabletManager" class="input01" /></td>
 				</tr>
 					<tr>
-					<td>태블릿PC 번호</td>
+					<td>태블릿 ID</td>
 					<td><form:input path="tabletNo" class="input02" onkeypress="javascript:pressContact();"/>
 					<input type="button" class="button02 button05" value="중복확인" onclick="javascript:duplicateContactCheck();">
 					<input type="hidden" id="isDuplicate" name="isDuplicate" value="false">

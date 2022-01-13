@@ -33,9 +33,9 @@
 				<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${param.constructionIdx}">
 					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
 				</a>
-				<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
+			<%-- 	<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
 					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
-				</a>
+				</a> --%>
 				<%-- <a href="#">
 					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">투입인력
 				</a>
@@ -52,9 +52,9 @@
 					<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${sessionInfo.constructionIdx}">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
 					</a>
-					<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${sessionInfo.constructionIdx}">
+				<%-- 	<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${sessionInfo.constructionIdx}">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
-					</a>
+					</a> --%>
 					<%-- <a href="#">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">투입인력
 					</a>
@@ -74,9 +74,9 @@
 					<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${param.constructionIdx}">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
 					</a>
-					<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
+					<%-- <a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
-					</a>
+					</a> --%>
 					<%-- <a href="#">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">투입인력
 					</a>

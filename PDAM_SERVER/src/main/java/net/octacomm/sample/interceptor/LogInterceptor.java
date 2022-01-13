@@ -22,4 +22,7 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
 		return true;
 	}
 
+	public static void main(String[] args) {
+	}
+
 }

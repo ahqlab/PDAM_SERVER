@@ -10,5 +10,13 @@ public class AuthCode {
 	private String userId;
 	
 	private String authCode;
-		
+
+	//46,768,500
+	// 6,700,000
+	//40,000,000
+	// 9,086,946
+	//   150,000
+	// 2,000,000
 }
+
+

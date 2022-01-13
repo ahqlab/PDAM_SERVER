@@ -581,6 +581,7 @@
 		FROM TB_FILE_INVENTORY
 		<include refid="condition"/>
 		ORDER BY registDate DESC , fiIdx DESC 
+		LIMIT #{pageSize} OFFSET #{startRow}
     </select> 
     
 </mapper>

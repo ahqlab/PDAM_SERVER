@@ -55,8 +55,6 @@ public interface DeviceMapper extends CRUDMapper<Device, DeviceParam, Integer>{
 	Device getFindByTabletNoAndPassword(Device device);
 	
 	
-	
-	
 	@Update("UPDATE " + TABLE_NAME + " SET isDel = 1 where id = #{id}")
 	int doDelete(int id);
 	

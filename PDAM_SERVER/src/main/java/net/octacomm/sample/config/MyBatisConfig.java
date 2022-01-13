@@ -42,7 +42,6 @@ public class MyBatisConfig {
 		dataSource.setUsername(username);
 		dataSource.setPassword(password);
 		dataSource.setValidationQuery("select 1");
-
 		return dataSource;
 	}
 	

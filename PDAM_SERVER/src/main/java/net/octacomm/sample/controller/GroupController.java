@@ -48,6 +48,7 @@ public class GroupController extends AbstractCRUDController<GroupMapper, Group, 
 	@ModelAttribute
 	public void setTotalUseCount(Model model, HttpSession session) {
 	    model.addAttribute("deviceCount", mapper.getTotalUseDeviceCount() > 0 ? "총 " + mapper.getTotalUseDeviceCount() + "대" : "총 0 대");
+	    model.addAttribute("devicePrenchCount", mapper.getPrenchTotalUseDeviceCount() > 0 ? "총 " + mapper.getPrenchTotalUseDeviceCount() + "대" : "총 0 대");
 	    model.addAttribute("constructionCount",  mapper.getTotalUseConstructionCount() > 0 ? "" + "총 " + mapper.getTotalUseConstructionCount() + "개" : "총 0 개");
 	}
 	

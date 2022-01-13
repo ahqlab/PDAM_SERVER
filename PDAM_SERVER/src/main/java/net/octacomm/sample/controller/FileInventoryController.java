@@ -1,4 +1,4 @@
-package net.octacomm.sample.controller;
+	package net.octacomm.sample.controller;
 
 import java.util.List;
 
@@ -46,11 +46,10 @@ public class FileInventoryController
 	@ResponseBody
 	@RequestMapping(value = "/check/duplicate")
 	public boolean checkDuplicate(@RequestParam("registDate") String registDate ,  @RequestParam("pileType") String pileType,  @RequestParam("pileStandard") String pileStandard, @RequestParam("constructionIdx") int constructionIdx, @RequestParam("fileWeight") String fileWeight) {
-		
-		System.err.println("registDate : " + registDate);
-		System.err.println("pileType : " + pileType);
-		System.err.println("constructionIdx : " + constructionIdx);
-		System.err.println("fileWeight : " + fileWeight);
+		//System.err.println("registDate : " + registDate);
+		//System.err.println("pileType : " + pileType);
+		//System.err.println("constructionIdx : " + constructionIdx);
+		//System.err.println("fileWeight : " + fileWeight);
 		FileInventory inventory;
 		if(fileWeight != "") {
 			inventory = mapper.getFileInventory1(registDate, pileType, pileStandard, constructionIdx, fileWeight);

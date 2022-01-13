@@ -42,26 +42,25 @@
     		conduct
     	FROM TB_CONSTRUCTION
     	<include refid="condition"/>
-    	ORDER BY id DESC
+    	ORDER BY conduct ASC, id DESC
         LIMIT #{pageSize} OFFSET #{startRow}
     </select>   
     
     <update id="update" parameterType="Construction">
-    UPDATE 
-    	TB_CONSTRUCTION 
-    SET 
-    	name = #{name} , 
-    	location = #{location} ,
-    	address = #{address},
-    	manager = #{manager} 
-    	<if test="password != null and password != ''">
-    	, password = #{password} 
-    	</if>
-    	, contact = #{contact} 
-    	, groupIdx = #{groupIdx} 
-    	, secretCode = #{secretCode} 
-    WHERE id = #{id} 
-    
+	    UPDATE 
+	    	TB_CONSTRUCTION 
+	    SET 
+	    	name = #{name} , 
+	    	location = #{location} ,
+	    	address = #{address},
+	    	manager = #{manager} 
+	    	<if test="password != null and password != ''">
+	    	, password = #{password} 
+	    	</if>
+	    	, contact = #{contact} 
+	    	, groupIdx = #{groupIdx} 
+	    	, secretCode = #{secretCode} 
+	    WHERE id = #{id} 
     </update>
     
 </mapper>

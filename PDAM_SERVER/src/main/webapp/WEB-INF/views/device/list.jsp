@@ -95,8 +95,17 @@ function fileChange(value){
 }
 
 function conductSel(idx, selectVal){
+	
+	var alertMsg = "";
+	if(selectVal == '0'){
+		alertMsg = "본사";
+	}else if(selectVal == '1'){
+		alertMsg = "종료";
+	}else if(selectVal == '2'){
+		alertMsg = "가맹";
+	}
 
-	var result = confirm((selectVal == '0' ? '\'시행\'' : '\'종료\'') +  ' 상태로 변경하시겠습니까?');
+	var result = confirm(alertMsg +  ' 상태로 변경하시겠습니까?');
 	if(result){
 		jQuery.ajax({
 			type : "POST",
@@ -117,6 +126,92 @@ function conductSel(idx, selectVal){
 			}
 		}); 	
 	}
+}
+
+function setQuantity(){
+	var cIdx = ${param.constructionIdx};
+	var value = $('#quantity').val();
+	jQuery.ajax({
+		type : "POST",
+		url : "${pageContext.request.contextPath}/quantity/set",
+		async : false,  // 요청 시 동기화 여부. 기본은 비동기(asynchronous) 요청 (default: true)
+		data: {
+			constructionIdx : cIdx
+			, quantity : value
+		}, 
+		success : function(data) {				
+			 if(data > 0){
+				// alert(data);
+				 $('#searchForm').submit();	
+			 }else{
+				 alert('저장에 실패했습니다. 관리자에게 문의하세요.');
+			 }
+		},
+		complete : function(data) {
+			
+		},
+		error : function(xhr, status, error) {
+			
+		}
+	}); 
+	
+	alert(result);
+}
+
+function getQuantity(){
+	var cIdx = ${param.constructionIdx};
+	alert('cIdx : '  + cIdx);
+	jQuery.ajax({
+		type : "POST",
+		url : "${pageContext.request.contextPath}/quantity/get",
+		async : false,  // 요청 시 동기화 여부. 기본은 비동기(asynchronous) 요청 (default: true)
+		data: {
+			constructionIdx : cIdx
+		}, 
+		success : function(data) {				
+			 if(data.constructionIdx = 'undefined'){
+				 $('#workSummary').html('공정률 0%&nbsp;&nbsp;&nbsp;남은수량 0 본 &nbsp;&nbsp;&nbsp;총 작업수량 <input type="text" class="input01" style="width: 100px;">&nbsp;본&nbsp;<input type="button" value="저장" onclick="javascript:setQuantity();">');
+				 
+			 }else{
+				 alert('????');
+			 }
+		},
+		complete : function(data) {
+			
+		},
+		error : function(xhr, status, error) {
+			
+		}
+	}); 
+}
+
+
+function getQuantityResult(){
+	var cIdx = ${param.constructionIdx};
+	
+	jQuery.ajax({
+		type : "POST",
+		url : "${pageContext.request.contextPath}/quantity/get",
+		async : false,  // 요청 시 동기화 여부. 기본은 비동기(asynchronous) 요청 (default: true)
+		data: {
+			constructionIdx : cIdx
+		}, 
+		success : function(data) {	
+			alert(data);
+			 if(data.constructionIdx = 'undefined'){
+				 return false;
+			 }else{
+				 return true;
+			 }
+		},
+		complete : function(data) {
+			
+		},
+		error : function(xhr, status, error) {
+			
+		}
+	}); 
+	return false;
 }
 
 </script>
@@ -149,11 +244,11 @@ function conductSel(idx, selectVal){
 			<!--제목 검색폼 end-->
 		</div>
 		<!-- Modal -->
-		<div style="font-size : 22px;">
-			공정률 100%
-			&nbsp;&nbsp;&nbsp;남은수량 100000 본 
-			&nbsp;&nbsp;&nbsp;작업총 수량 <input type="text" class="input01" style="width: 100px;">&nbsp;본
-			<input type="button" value="저장">
+		<div style="font-size : 22px;" id="workSummary" name="workSummary">
+			공정률 ${totalWorkQuantity.processRate}%
+			&nbsp;&nbsp;&nbsp;남은수량 ${totalWorkQuantity.quantityLeft} 공
+			&nbsp;&nbsp;&nbsp;총 작업수량 <input type="text" class="input01" id="quantity" name="quantity" value="${totalWorkQuantity.quantity}"style="width: 100px;">&nbsp;공
+			<input type="button" value="저장" onclick="javascript:setQuantity();">
 		</div>
 		<br>
 			<!--search_div end-->
@@ -162,7 +257,7 @@ function conductSel(idx, selectVal){
 				<table class="table01"  id="userListTable">
 					<tr>
 						<th style="width: 10%;">호기</th>
-						<th style="width: 10%;">테블릿 ID</th>
+						<th style="width: 10%;">태블릿 ID</th>
 						<th style="width: 10%;">블루투스 No</th>
 						<th style="width: 10%;">자동측정기 S/N</th>
 						<th style="width: 8%;">WE매니저</th>
@@ -192,7 +287,8 @@ function conductSel(idx, selectVal){
 									<td><a href="javascript:changeInfo('${domain.id}')">[정보변경]</a></td>
 									<td>
 										<select id="conductSel" class="select01" style="height:30px;" onchange="conductSel('${domain.id}', this.value)">
-											<option value="0" ${domain.conduct == 0 ? 'selected="selected"' : '' }>시행</option>
+											<option value="0" ${domain.conduct == 0 ? 'selected="selected"' : '' }>본사</option>
+											<option value="2" ${domain.conduct == 2 ? 'selected="selected"' : '' }>가맹</option>
 											<option value="1" ${domain.conduct == 1 ? 'selected="selected"' : '' }>종료</option>
 										</select>
 									</td>

@@ -21,6 +21,9 @@
 					<a href="${pageContext.request.contextPath}/group/list" class="on">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">시공사
 					</a>
+					<a href="${pageContext.request.contextPath}/franchise/list">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">가맹점
+					</a>
 					<a href="${pageContext.request.contextPath}/construction/list">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png"  class="menu_icon">전체 협력사
 					</a>
@@ -39,9 +42,9 @@
 					<a href="${pageContext.request.contextPath}/construction/list?groupIdx=${sessionInfo.groupIdx}" class="on">
 						<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">협력사
 					</a>
-					<a href="${pageContext.request.contextPath}/designDepth/list">
+					<%-- <a href="${pageContext.request.contextPath}/designDepth/list">
 						<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">설계심도
-					</a>
+					</a> --%>
 				</li>
 			</c:when>
 		</c:choose>

@@ -48,6 +48,9 @@ public interface GroupMapper extends CRUDMapper<Group, GroupParam, Integer>{
 	@Select("SELECT count(*) FROM (SELECT * FROM TB_DEVICE WHERE conduct = 0 AND isDel = 0) A, (SELECT * FROM TB_CONSTRUCTION WHERE conduct = 0 AND isDel = 0) B, TB_GROUP C WHERE C.idx = B.groupIdx AND A.constructionIdx = B.id ")
 	int getTotalUseDeviceCount();
 	
+	@Select("SELECT count(*) FROM (SELECT * FROM TB_DEVICE WHERE conduct = 2 AND isDel = 0) A, (SELECT * FROM TB_CONSTRUCTION WHERE conduct = 0 AND isDel = 0) B, TB_GROUP C WHERE C.idx = B.groupIdx AND A.constructionIdx = B.id ")
+	int getPrenchTotalUseDeviceCount();
+	
 	@Select("SELECT count(*) FROM TB_CONSTRUCTION  A,  TB_GROUP C WHERE C.idx = A.groupIdx AND A.conduct = 0 AND A.isDel = 0")
 	int getTotalUseConstructionCount();
 

@@ -6,7 +6,6 @@ import net.octacomm.sample.dao.mapper.ConstructionMapper;
 import net.octacomm.sample.dao.mapper.GroupMapper;
 import net.octacomm.sample.domain.Construction;
 import net.octacomm.sample.domain.Group;
-import net.octacomm.sample.domain.User;
 import net.octacomm.sample.exceptions.InvalidPasswordException;
 import net.octacomm.sample.exceptions.NotFoundUserException;
 import net.octacomm.sample.service.LoginService;
@@ -22,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LoginController {
 	
 	public static final String LOGIN_URL = "/login";
+	
 	public static final String DEFAULT_GROUP_TARGET_URL = "/construction/list";
+	
 	public static final String DEFAULT_ADMIN_TARGET_URL = "/group/list";
+	
+	public static final String DEFAULT_FC_TARGET_URL = "/franchise/list";
+	
 	public static final String DEFAULT_TARGET_URL = "/device/list";
 
 	@Autowired
@@ -39,7 +43,6 @@ public class LoginController {
 	public String index() {
 		return "redirect:" + LOGIN_URL;
 	}
-	
 	/**
 	 * 로그인
 	 * 
@@ -51,7 +54,6 @@ public class LoginController {
 		model.addAttribute("domain", new Construction());
 		return LOGIN_URL;
 	}
-
 	/**
 	 * 로그인 진행
 	 * 
@@ -67,12 +69,14 @@ public class LoginController {
 			Construction result = loginService.login(construction, session);
 			if(result != null) {
 				System.err.println("result.getRole() : " + result.getRole());
-				
 				if(result.getRole() == 0) {
 					return "redirect:" + DEFAULT_ADMIN_TARGET_URL;
 				}else if(result.getRole() == 2) {
 					Group group = groupMapper.selectByUserId(result.getUserId());
 					return "redirect:" + DEFAULT_GROUP_TARGET_URL + "?groupIdx=" + group.getIdx();
+				}else if(result.getRole() == 3) {
+					
+					return "redirect:" + DEFAULT_FC_TARGET_URL + "?groupIdx=";
 				}
 				return "redirect:" + DEFAULT_TARGET_URL + "?constructionIdx=" + result.getId();
 			}
@@ -90,7 +94,6 @@ public class LoginController {
 		}
 		return LOGIN_URL;
 	}
-
 	/**
 	 * 로그아웃
 	 * 
@@ -102,5 +105,4 @@ public class LoginController {
 		httpSession.invalidate();
 		return "redirect:" + LOGIN_URL;
 	}
-
 }

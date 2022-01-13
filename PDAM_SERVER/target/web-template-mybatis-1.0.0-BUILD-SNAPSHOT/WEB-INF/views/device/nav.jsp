@@ -6,32 +6,83 @@
 			<c:when test="${sessionInfo.role == 0}">
 				<a href="${pageContext.request.contextPath}/group/list"><img src="${pageContext.request.contextPath}/images/logo.png" class="로고"></a>
 			</c:when>
-			<c:otherwise>
+			<c:when test="${sessionInfo.role == 1}">
 				<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${sessionInfo.constructionIdx}"><img src="${pageContext.request.contextPath}/images/logo.png" class="로고"></a>
-			</c:otherwise>
+			</c:when>
+			<c:when test="${sessionInfo.role == 2}">
+				<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${param.constructionIdx}"><img src="${pageContext.request.contextPath}/images/logo.png" class="로고"></a>
+			</c:when>
+			<%-- <c:otherwise>
+				<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${sessionInfo.constructionIdx}"><img src="${pageContext.request.contextPath}/images/logo.png" class="로고"></a>
+			</c:otherwise> --%>
 		</c:choose>
 	</div>
 	<ul id="gnb">
 		<c:choose>
 			<c:when test="${sessionInfo.role == 0}">
 			<li class='sub-menu'>
+				<a href="${pageContext.request.contextPath}/group/list">
+					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon" >시공사
+				</a>
 				<a href="${pageContext.request.contextPath}/construction/list">
-					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">시공사</a>
-				<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${param.constructionIdx}"><img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정</a>
-				<%-- <ul class="tab_menu" style="display:none;">
-					<li class="tab_menu2"><a href="${pageContext.request.contextPath}/construction/list"><span class="one"></span>시공사리스트</a></li>
-					<li class="tab_menu2"><a href="${pageContext.request.contextPath}/construction/regist"><span class="one"></span>시공사등록</a></li>
-				</ul> --%>
+					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon" >전체협력사
+				</a>
+				<a href="#" class="on">
+					<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">기기관리
+				</a>	
+				<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${param.constructionIdx}">
+					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
+				</a>
+			<%-- 	<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
+					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
+				</a> --%>
+				<%-- <a href="#">
+					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">투입인력
+				</a>
+				<a href="#">
+					<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">주유현황
+				</a> --%>
 			</li>
 			</c:when>
-			<c:when test="${sessionInfo.role > 0}">
+			<c:when test="${sessionInfo.role == 1}">
 				<li class='sub-menu'>
-					<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${sessionInfo.constructionIdx}">
+					<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${sessionInfo.constructionIdx}" class="on">
+						<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">기기관리
+					</a>
+					<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${sessionInfo.constructionIdx}">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
+					</a>
+				<%-- 	<a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${sessionInfo.constructionIdx}">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
+					</a> --%>
+					<%-- <a href="#">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">투입인력
+					</a>
+					<a href="#">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">주유현황
+					</a> --%>
+				</li>
+			</c:when>
+			<c:when test="${sessionInfo.role == 2}">
+				<li class='sub-menu'>
+					<a href="${pageContext.request.contextPath}/construction/list?groupIdx=${sessionInfo.groupIdx}">
+						<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">협력사
+					</a>
+					<a href="${pageContext.request.contextPath}/device/list?constructionIdx=${param.constructionIdx}"  class="on">
 						<img src="${pageContext.request.contextPath}/images/menu_icon02.png" class="menu_icon">기기관리
 					</a>
 					<a href="${pageContext.request.contextPath}/fileinventory/list?constructionIdx=${param.constructionIdx}">
 						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">파일반입 및 수정
 					</a>
+					<%-- <a href="${pageContext.request.contextPath}/erpAdmin/list?constructionIdx=${param.constructionIdx}">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">관리자현황
+					</a> --%>
+					<%-- <a href="#">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">투입인력
+					</a>
+					<a href="#">
+						<img src="${pageContext.request.contextPath}/images/menu_icon01.png" class="menu_icon">주유현황
+					</a> --%>
 				</li>
 			</c:when>
 		</c:choose>

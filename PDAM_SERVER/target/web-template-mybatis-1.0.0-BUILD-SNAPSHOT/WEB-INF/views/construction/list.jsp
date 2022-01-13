@@ -74,8 +74,37 @@ function doDelete(idx){
 
 	<div class="tab_menu">
 		<ul>
-			<li class="on"><a href="${pageContext.request.contextPath}/construction/list"><img src="${pageContext.request.contextPath}/images/icon03_on.png" class="icon03">협력사리스트</a></li>
-			<li><a href="${pageContext.request.contextPath}/construction/regist"><img src="${pageContext.request.contextPath}/images/icon03_off.png" class="icon03">협력사등록</a></li>
+			<li class="on">
+				
+				<c:choose>
+					<c:when test="${sessionInfo.role == 0}">
+						<a href="${pageContext.request.contextPath}/construction/list">
+							<img src="${pageContext.request.contextPath}/images/icon03_on.png" class="icon03">협력사리스트
+						</a>
+					</c:when>
+					<c:when test="${sessionInfo.role == 2}">
+						<a href="${pageContext.request.contextPath}/construction/list?groupIdx=${sessionInfo.groupIdx}">
+							<img src="${pageContext.request.contextPath}/images/icon03_on.png" class="icon03">협력사리스트
+						</a>
+					</c:when>					
+				</c:choose>
+				
+			</li>
+			<li>
+				<c:choose>
+					<c:when test="${sessionInfo.role == 0}">
+						<a href="${pageContext.request.contextPath}/construction/regist">
+							<img src="${pageContext.request.contextPath}/images/icon03_off.png" class="icon03">협력사등록
+						</a>
+					</c:when>
+					<c:when test="${sessionInfo.role == 2}">
+						<a href="${pageContext.request.contextPath}/construction/regist">
+							<img src="${pageContext.request.contextPath}/images/icon03_off.png" class="icon03">협력사등록
+						</a>
+					</c:when>					
+				</c:choose>
+				
+			</li>
 		</ul>
 	</div>
 	<!--table01_content-->
@@ -111,13 +140,13 @@ function doDelete(idx){
 		<div class="table_list">
 			<table class="table01">
 				<tr>
-					<th style="width: 8%;">등록일</th>
+					<th style="width: 5%;">등록일</th>
 					<th style="width: 10%;">협력사</th>
-					<th style="width: 10%;">현장명</th>
+					<th style="width: 13%;">현장명</th>
 					<th>현장주소</th>
-					<th style="width: 8%;">현장담당자</th>
-					<th style="width: 10%;">연락처</th>
-					<th style="width: 8%;">아이디</th>
+					<th style="width: 6%;">현장담당자</th>
+					<th style="width: 7%;">연락처</th>
+					<th style="width: 6%;">아이디</th>
 					<th style="width: 5%;">기기등록</th>
 					<th style="width: 5%;">정보변경</th>
 					<c:choose>

@@ -16,8 +16,17 @@ $( document ).ready( function() {
 });
 
 function conductSel(idx, selectVal){
+	
+	var statusMsg = "";
+	if(selectVal == '0'){
+		statusMsg = "시행";
+	}else if(selectVal == '1'){
+		statusMsg = "종료";
+	}else{
+		statusMsg = "가맹";
+	} 
 
-	var result = confirm((selectVal == '0' ? '\'시행\'' : '\'종료\'') +  ' 상태로 변경하시겠습니까?');
+	var result = confirm(statusMsg +  ' 상태로 변경하시겠습니까?');
 	if(result){
 		
 		jQuery.ajax({
@@ -174,6 +183,7 @@ function doDelete(idx){
 									<select id="conductSel" class="select01" style="height:30px;" onchange="conductSel('${domain.id}', this.value)">
 										<option value="0" ${domain.conduct == 0 ? 'selected="selected"' : '' }>시행</option>
 										<option value="1" ${domain.conduct == 1 ? 'selected="selected"' : '' }>종료</option>
+										<option value="2" ${domain.conduct == 2 ? 'selected="selected"' : '' }>가맹</option>
 									</select>
 								</td>
 							</c:when>

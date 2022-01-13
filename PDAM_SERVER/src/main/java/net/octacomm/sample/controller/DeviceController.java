@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.octacomm.sample.dao.mapper.ConstructionMapper;
 import net.octacomm.sample.dao.mapper.DeviceMapper;
+import net.octacomm.sample.dao.mapper.TotalWorkQuantityMapper;
 import net.octacomm.sample.domain.Construction;
 import net.octacomm.sample.domain.ConstructionParam;
 import net.octacomm.sample.domain.Device;
@@ -26,12 +27,14 @@ import net.octacomm.sample.domain.SessionInfo;
 
 @RequestMapping("/device")
 @Controller
-public class DeviceController extends AbstractCRUDController<DeviceMapper, Device, DeviceParam, Integer>{
+public class DeviceController extends AbstractDeviceCRUDController<DeviceMapper, Device, DeviceParam, Integer>{
+	
+	@Autowired
+	private TotalWorkQuantityMapper totalWorkQuantityMapper;
 	
 	@Autowired
 	private ConstructionMapper ConstructionMapper;
 
-	
 	@Autowired
 	@Override
 	public void setCRUDMapper(DeviceMapper mapper) {
@@ -58,16 +61,12 @@ public class DeviceController extends AbstractCRUDController<DeviceMapper, Devic
 			model.addAttribute("menuIndex", 1);
 		}
 	}
-	
 
-	
 	@RequestMapping(value = "/regist2", method = RequestMethod.GET)
 	public void regist(Model model, @RequestParam("constructionIdx") int constructionIdx){
 		model.addAttribute("constructionIdx", constructionIdx);
 		model.addAttribute("domain", new Device());
 	}
-	
-	
 	
 	@ResponseBody
 	@RequestMapping(value = "/duplicate/tabletNo/confirm", method = RequestMethod.POST)
@@ -88,4 +87,9 @@ public class DeviceController extends AbstractCRUDController<DeviceMapper, Devic
 		return mapper.updateConduct(id, conduct) > 0;
 	}
 	
+	//@ModelAttribute
+	//public void setTotalWorkQuantity(Model model) {
+	//	totalWorkQuantityMapper.get(id);
+	//    //model.addAttribute("sessionInfo", sessionInfo);
+	//}
 }
